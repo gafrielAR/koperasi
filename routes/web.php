@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\SavingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +20,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::name('admin.')->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::name('member.')->prefix('member')->group(function () {
+        Route::get('/', [MemberController::class, 'list'])->name('list');
+        Route::get('/{id}/edit', [MemberController::class, 'edit'])->name('edit');
+        Route::post('/create', [MemberController::class, 'create'])->name('create');
+        Route::post('/update/{id}', [MemberController::class, 'update'])->name('update');
+        Route::post('/delete/{id}', [MemberController::class, 'delete'])->name('delete');
+    });
+
+    Route::name('saving.')->prefix('saving')->group(function () {
+        Route::get('/', [SavingController::class, 'list'])->name('list');
+        Route::get('/{id}/edit', [SavingController::class, 'edit'])->name('edit');
+        Route::post('/create', [SavingController::class, 'create'])->name('create');
+        Route::post('/update/{id}', [SavingController::class, 'update'])->name('update');
+        Route::post('/delete/{id}', [SavingController::class, 'delete'])->name('delete');
+    }
+    );
+});
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
