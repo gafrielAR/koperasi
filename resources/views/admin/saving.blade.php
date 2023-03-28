@@ -9,7 +9,7 @@
 <div class="p-5">
     <div class="row">
         <div class="col-sm-4">
-            <h1>Members</h1>
+            <h1>Savings</h1>
         </div>
 
         <div class="col-sm-4 offset-sm-4">
@@ -21,8 +21,7 @@
                 </div>
                 <div class="col-sm-8">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Search Member"
-                            aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="search" class="form-control" placeholder="Search" aria-controls="savings-table">
                         <span class="input-group-text" id="basic-addon2">search</span>
                     </div>
                 </div>
@@ -31,25 +30,25 @@
     </div>
 
     <div class="row">
-        @foreach ($members as $member)
-        <div class="col-sm-4 p-2">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Recipient's username"
-                    aria-label="Recipient's username" aria-describedby="button-addon2"
-                    value="{{ $member->name }} - {{ $member->nip }} - {{ $member->gender }}" disabled readonly>
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="button-addon2"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-three-dots-vertical"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" id="editButton" href="#" data-id="{{ $member->id }}">Edit</a></li>
-                    <li><a class="dropdown-item" id="deleteButton" href="#" data-id="{{ $member->id }}">Delete</a></li>
-                </ul>
-            </div>
-        </div>
-        @endforeach
+        {{ $dataTable->table() }}
+        {{-- <table class="table table-bordered yajra-datatable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Transaction Number</th>
+                    <th>Date</th>
+                    <th>Member</th>
+                    <th>Mandatory Saving</th>
+                    <th>Voluntary Saving</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table> --}}
     </div>
-    {{ $members->links("pagination::bootstrap-5") }}
+
+    {{-- {{ $savings->links("pagination::bootstrap-5") }}    --}}
 </div>
 
 <!-- Modal Create -->
@@ -122,14 +121,17 @@
     $('body').on('click', '#editButton', function(e) {
         var id = $(this).data('id');
         $.ajax({
-            url: 'member/' + id + '/edit',
+            url: 'saving/' + id + '/edit',
             type: 'GET',
             success: function(response) {
                 console.log(response.result);
                 $('#exampleModal').modal('show');
-                $('#name').val(response.result.name);
-                $('#nip').val(response.result.nip);
-                $("input[name=gender][value=" + response.result.gender + "]").prop('checked', true);
+                $('#transaction_number').val(response.result.transaction_number),
+                $('#date').val(response.result.date),
+                $('#member').val(response.result.member),
+                $('#principal_saving').val(response.result.principal_saving),
+                $('#mandatory_saving').val(response.result.mandatory_saving),
+                $('#voluntary_saving').val(response.result.voluntary_saving),
                 $('#save').click(function() {
                     save(id);
                 });
@@ -142,7 +144,7 @@
         if (confirm('Are you fucking sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
-                url: 'member/delete/' + id,
+                url: 'saving/delete/' + id,
                 type: 'POST',
                 success: function(html) {
                     location.reload();
@@ -154,10 +156,10 @@
     // fungsi simpan dan update
     function save(id = '') {
         if (id == '') {
-            var action = 'member/create';
+            var action = 'saving/create';
             var method = 'POST';
         } else {
-            var action = 'member/update/' + id;
+            var action = 'saving/update/' + id;
             var method = 'POST';
         }
         console.log(action);
@@ -165,9 +167,12 @@
             url: action,
             type: method,
             data: {
-                name: $('#name').val(),
-                nip: $('#nip').val(),
-                gender: $('#gender:checked').val(),
+                transaction_number: $('#transaction_number').val(),
+                date: $('#date').val(),
+                member: $('#member').val(),
+                principal_saving: $('#principal_saving').val(),
+                mandatory_saving: $('#mandatory_saving').val(),
+                voluntary_saving: $('#voluntary_saving').val(),
             },
             success: function(html) {
                 location.reload();
@@ -175,9 +180,26 @@
         });
     }   
     $('#exampleModal').on('hidden.bs.modal', function() {
-        $('#name').val();
-        $('#nip').val();
-        $("input[name='gender']").prop('checked', true).val();
+        $('#transaction_number').val();
+        $('#date').val();
+        $('#member').val();
+        $('#principal_saving').val();
+        $('#mandatory_saving').val();
+        $('#voluntary_saving').val();
     });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script type="module">
+    $(function() {window.LaravelDataTables=window.LaravelDataTables||{};window.LaravelDataTables["savings-table"]=$("#savings-table").DataTable({"serverSide":true,"processing":true,"ajax":{"url":"http:\/\/koperasi.webdev\/admin\/saving","type":"GET","data":function(data) {
+            for (var i = 0, len = data.columns.length; i < len; i++) {
+                if (!data.columns[i].search.value) delete data.columns[i].search;
+                if (data.columns[i].searchable === true) delete data.columns[i].searchable;
+                if (data.columns[i].orderable === true) delete data.columns[i].orderable;
+                if (data.columns[i].data === data.columns[i].name) delete data.columns[i].name;
+            }
+            delete data.search.regex;}},"columns":[{"data":"id","name":"id","title":"Id","orderable":true,"searchable":true},{"data":"transaction_number","name":"transaction_number","title":"Transaction Number","orderable":true,"searchable":true},{"data":"date","name":"date","title":"Date","orderable":true,"searchable":true},{"data":"member","name":"member","title":"Member","orderable":true,"searchable":true},{"data":"principal_saving","name":"principal_saving","title":"Principal Saving","orderable":true,"searchable":true},{"data":"mandatory_saving","name":"mandatory_saving","title":"Mandatory Saving","orderable":true,"searchable":true},{"data":"voluntary_saving","name":"voluntary_saving","title":"Voluntary Saving","orderable":true,"searchable":true},{"data":"action","name":"action","title":"Action","orderable":false,"searchable":false,"width":60,"className":"text-center"}],"order":[[1,"desc"]],"select":{"style":"single"},"buttons":[{"extend":"excel"},{"extend":"csv"},{"extend":"pdf"},{"extend":"print"},{"extend":"reset"},{"extend":"reload"}]});});
 </script>
 @endsection

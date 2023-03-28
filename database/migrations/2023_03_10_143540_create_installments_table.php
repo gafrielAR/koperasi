@@ -23,8 +23,8 @@ return new class extends Migration
             $table->bigInteger('ammount');
             $table->timestamps();
 
-            $table->foreign('member')->references('id')->on('members');
-            $table->foreign('loan')->references('id')->on('loans');
+            $table->foreign('member')->references('id')->on('members')->onDelete('CASCADE');
+            $table->foreign('loan')->references('id')->on('loans')->onDelete('CASCADE');
         });
     }
 

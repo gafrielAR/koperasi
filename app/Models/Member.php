@@ -10,7 +10,7 @@ class Member extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama',
+        'name',
         'nip',
         'gender',
     ];

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->bigInteger('installment');
             $table->timestamps();
 
-            $table->foreign('member')->references('id')->on('members');
+            $table->foreign('member')->references('id')->on('members')->onDelete('CASCADE');
         });
     }
 

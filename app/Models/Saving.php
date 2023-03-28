@@ -17,8 +17,6 @@ class Saving extends Model
         'voluntary_saving',
     ];
 
-    // protected $dates = 'date';
-
     public function member() {
         return $this->belongsTo(Member::class, 'member', 'id');
     }

@@ -29,7 +29,11 @@
 </head>
 
 <body>
-    <section>
+    <section style="background: linear-gradient(to right, transparent 50%, #fff 50%),
+                url({{ asset('assets/img/DSC_4856-1.png') }}) no-repeat top left;
+            background-size: 100vh contain;
+            height: 100vh;
+            overflow: hidden;">
         <div class="row">
             <div class="col-md-6 offset-md-6 p-0">
                 <div class="d-flex align-content-center">

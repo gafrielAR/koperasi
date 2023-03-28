@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('transaction_number')->unique();
             $table->date('date');
             $table->unsignedBigInteger('member');
+            $table->bigInteger('principal_saving');
             $table->bigInteger('mandatory_saving');
             $table->bigInteger('voluntary_saving');
             $table->timestamps();
 
-            $table->foreign('member')->references('id')->on('members');
+            $table->foreign('member')->references('id')->on('members')->onDelete('CASCADE');
         });
     }
 
