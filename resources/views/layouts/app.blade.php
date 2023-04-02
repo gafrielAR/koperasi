@@ -17,6 +17,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
     {{-- style --}}
     <style>
@@ -30,6 +31,29 @@
         /* Firefox */
         input[type=number] {
             -moz-appearance: textfield;
+        }
+
+        /* Remove number arrow/spinner from input number on Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Remove number arrow/spinner from input number on Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .hide-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
         }
 
         .overflow-hidden {
@@ -50,6 +74,20 @@
 
         .dropdown-toggle::after {
             content: none;
+        }
+
+        .results tr[visible='false'],
+        .no-result{
+            display:none;
+        }
+        
+        .results tr[visible='true']{
+            display:table-row;
+        }
+        
+        .counter{
+            padding:8px;
+            color:#ccc;
         }
     </style>
 </head>
@@ -145,8 +183,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" 
-                                class="nav-link {{ Route::currentRouteName() == '' ? 'active' : 'link-dark' }}">
+                            <a href="{{ route('admin.loan.list') }}" 
+                                class="nav-link {{ Route::currentRouteName() == 'admin.loan.list' ? 'active' : 'link-dark' }}">
                                 <svg class="bi pe-none me-2" width="16" height="16">
                                     <use xlink:href="#people-circle"></use>
                                 </svg>

@@ -12,7 +12,7 @@ class Loan extends Model
     protected $fillable = [
         'loan_number',
         'date',
-        'member',
+        'member_id',
         'loan',
         'interest',
         'term',
@@ -22,7 +22,7 @@ class Loan extends Model
     // protected $dates = 'date';
 
     public function member() {
-        return $this->belongsTo(Member::class, 'member', 'id');
+        return $this->belongsTo(Member::class);
     }
 
     public function installments() {

@@ -16,14 +16,14 @@ class Member extends Model
     ];
 
     public function savings() {
-        return $this->hasMany(Saving::class, 'member', 'id');
+        return $this->hasMany(Saving::class);
     }
 
     public function loans() {
-        return $this->hasMany(Loan::class, 'member', 'id');
+        return $this->hasMany(Loan::class);
     }
 
     public function installments() {
-        return $this->hasMany(Installment::class, 'member', 'id');
+        return $this->hasMany(Installment::class);
     }
 }

@@ -15,16 +15,16 @@ return new class extends Migration
     {
         Schema::create('savings', function (Blueprint $table) {
             $table->id();
-            $table->string('prefix');
+            $table->string('prefix')->default('SV');
             $table->string('transaction_number')->unique();
             $table->date('date');
-            $table->unsignedBigInteger('member');
+            $table->unsignedBigInteger('member_id');
             $table->bigInteger('principal_saving');
             $table->bigInteger('mandatory_saving');
             $table->bigInteger('voluntary_saving');
             $table->timestamps();
 
-            $table->foreign('member')->references('id')->on('members')->onDelete('CASCADE');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('CASCADE');
         });
     }
 

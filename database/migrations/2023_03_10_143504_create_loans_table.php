@@ -20,14 +20,14 @@ return new class extends Migration
             $table->string('prefix');
             $table->string('loan_number');
             $table->date('date');
-            $table->unsignedBigInteger('member');
+            $table->unsignedBigInteger('member_id');
             $table->bigInteger('loan');
             $table->bigInteger('interest');
             $table->integer('term');
             $table->bigInteger('installment');
             $table->timestamps();
 
-            $table->foreign('member')->references('id')->on('members')->onDelete('CASCADE');
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('CASCADE');
         });
     }
 

@@ -22,8 +22,7 @@ class InstallmentFactory extends Factory
             'prefix' => $prefix,
             'transsaction_number' => $prefix.$increment++,
             'date' => '2022-'.fake()->date($format = 'm-d', $max = 'now'),
-            'member' => fake()->randomDigitNotZero(),
-            'loan' => fake()->randomDigitNotZero(),
+            'loan_id' => fake()->randomDigitNotZero(),
             'ammount' => fake()->numberBetween($min = 100000, $max = 10000000),
         ];
     }

@@ -12,12 +12,13 @@ class Saving extends Model
     protected $fillable = [
         'transaction_number',
         'date',
-        'member',
+        'member_id',
+        'principal_saving',
         'mandatory_saving',
         'voluntary_saving',
     ];
 
     public function member() {
-        return $this->belongsTo(Member::class, 'member', 'id');
+        return $this->belongsTo(Member::class);
     }
 }

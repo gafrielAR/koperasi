@@ -23,7 +23,7 @@ class LoanFactory extends Factory
             'prefix' => $prefix,
             'loan_number' => $prefix.$increment++,
             'date' => '2022-' . fake()->date($format = 'm-d', $max = 'now'),
-            'member' => fake()->randomDigitNotZero(),
+            'member_id' => fake()->randomDigitNotZero(),
             'loan' => fake()->numberBetween($min = 100000, $max = 10000000),
             'interest' => fake()->numberBetween($min = 10000, $max = 50000),
             'term' => fake()->numberBetween($min = 1, $max = 12),

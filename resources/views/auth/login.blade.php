@@ -25,6 +25,10 @@
             height: 100vh;
             overflow: hidden;
         }
+
+        .h-100vh {
+            height: 100vh;
+        }
     </style>
 </head>
 
@@ -35,9 +39,11 @@
             height: 100vh;
             overflow: hidden;">
         <div class="row">
-            <div class="col-md-6 offset-md-6 p-0">
-                <div class="d-flex align-content-center">
-                    <div class="col-12 p-0">
+            <div class="col-md-6 offset-md-6 p-0 h-100vh">
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                    <div class="col-12 p-0 m-auto">
+                        <h1>Selamat Datang</h1>
+                        <h4 class="text-secondary">Log in di bawah </h4>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                         

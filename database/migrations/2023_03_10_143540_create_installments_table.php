@@ -18,13 +18,11 @@ return new class extends Migration
             $table->string('prefix');
             $table->string('transsaction_number');
             $table->date('date');
-            $table->unsignedBigInteger('member');
-            $table->unsignedBigInteger('loan')->nullable();
+            $table->unsignedBigInteger('loan_id')->nullable();
             $table->bigInteger('ammount');
             $table->timestamps();
 
-            $table->foreign('member')->references('id')->on('members')->onDelete('CASCADE');
-            $table->foreign('loan')->references('id')->on('loans')->onDelete('CASCADE');
+            $table->foreign('loan_id')->references('id')->on('loans')->onDelete('CASCADE');
         });
     }
 
