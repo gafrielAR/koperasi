@@ -49,7 +49,7 @@
             @foreach ($savings as $saving)
             <tr>
                 <th scope="row">{{ $loop->index+1 }}</td>
-                <td>{{ $saving->transaction_number }}</td>
+                <td>{{ $saving->prefix }}{{ str_pad($saving->id, 6, '0', STR_PAD_LEFT) }}</td>
                 <td>{{ $saving->date }}</td>
                 <td>{{ $saving->member->name }}</td>
                 <td>Rp. {{ number_format($saving->principal_saving, 2) }}-</td>
@@ -247,22 +247,22 @@
             var searchTerm = $(".search").val();
             var listItem = $('.results tbody').children('tr');
             var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
-            
+
             $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
                 return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
             }});
-            
+
             $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
                 $(this).attr('visible','false');
             });
-            
+
             $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
                 $(this).attr('visible','true');
             });
-            
+
             var jobCount = $('.results tbody tr[visible="true"]').length;
             $('.counter').text(jobCount + ' item');
-            
+
             if(jobCount == '0') {$('.no-result').show();}
             else {$('.no-result').hide();}
         });

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('savings', function (Blueprint $table) {
             $table->id();
             $table->string('prefix')->default('SV');
-            $table->string('transaction_number')->unique();
             $table->date('date');
             $table->unsignedBigInteger('member_id');
             $table->bigInteger('principal_saving');

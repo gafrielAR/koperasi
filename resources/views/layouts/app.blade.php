@@ -192,7 +192,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" 
+                            <a href="{{ route('admin.installment.list') }}" 
                                 class="nav-link {{ Route::currentRouteName() == '' ? 'active' : 'link-dark' }}">
                                 <svg class="bi pe-none me-2" width="16" height="16">
                                     <use xlink:href="#people-circle"></use>

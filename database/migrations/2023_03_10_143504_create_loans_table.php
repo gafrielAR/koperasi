@@ -18,7 +18,6 @@ return new class extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->string('prefix');
-            $table->string('loan_number');
             $table->date('date');
             $table->unsignedBigInteger('member_id');
             $table->bigInteger('loan');

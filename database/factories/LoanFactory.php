@@ -17,11 +17,9 @@ class LoanFactory extends Factory
     public function definition()
     {
         $prefix = 'LN';
-        static $increment = 1;
         
         return [
             'prefix' => $prefix,
-            'loan_number' => $prefix.$increment++,
             'date' => '2022-' . fake()->date($format = 'm-d', $max = 'now'),
             'member_id' => fake()->randomDigitNotZero(),
             'loan' => fake()->numberBetween($min = 100000, $max = 10000000),
