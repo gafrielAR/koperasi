@@ -14,7 +14,7 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
-        $members = Member::with('savings')->with('loans')->with('installments')->paginate(9);
+        $members = Member::paginate(9);
 
         return view('admin.dashboard', compact('members'));
     }

@@ -6,7 +6,7 @@
         <div class="row">
             @foreach ($members as $member)
                 <div class="col-12 col-md-4 p-3">
-                    <a href="{{ route('admin.loan.read') }}">
+                    <a href="{{ route('admin.loan.read', ['id' => $member->id]) }}">
                         <div class="row shadow p-2">
                             <div class="col-4">
                                 <img src="{{ asset('assets/img/profile.webp') }}" alt="" class="w-100">
