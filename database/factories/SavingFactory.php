@@ -18,11 +18,9 @@ class SavingFactory extends Factory
     public function definition()
     {
         $prefix = 'SV';
-        static $increment = 1;
         
         return [
             'prefix' => $prefix,
-            'transaction_number' => $prefix.$increment++,
             'date' => '2022-' . fake()->date($format = 'm-d', $max = 'now'),
             'member_id' => fake()->randomDigitNotZero(),
             'principal_saving' => fake()->numberBetween($min = 100000, $max = 1000000),

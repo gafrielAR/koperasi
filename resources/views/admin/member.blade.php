@@ -7,44 +7,30 @@
 </div>
 @endif
 <div class="p-5">
-    <div class="row">
-        <div class="col-sm-4">
-            <h1>Members</h1>
-        </div>
-
-        <div class="col-sm-4 offset-sm-4">
-            <div class="row d-flex justify-content-center">
-                <div class="col-sm-4">
-                    <button type="button" class="btn btn-primary" id="addButton">
-                        Add
-                    </button>
-                </div>
-                <div class="col-sm-8">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Search Member"
-                            aria-label="Recipient's username" aria-describedby="basic-addon2">
-                        <span class="input-group-text" id="basic-addon2">search</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <h1>Members</h1>
     <div class="row">
         @foreach ($members as $member)
-        <div class="col-sm-4 p-2">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Recipient's username"
-                    aria-label="Recipient's username" aria-describedby="button-addon2"
-                    value="{{ $member->name }} - {{ $member->nip }} - {{ $member->gender }}" disabled readonly>
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="button-addon2"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-three-dots-vertical"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" id="editButton" href="#" data-id="{{ $member->id }}">Edit</a></li>
-                    <li><a class="dropdown-item" id="deleteButton" href="#" data-id="{{ $member->id }}">Delete</a></li>
-                </ul>
+        <div class="col-12 col-md-4 p-3">
+            <div class="row shadow p-2">
+                <div class="col-4">
+                    <img src="{{ asset('assets/img/profile.webp') }}" alt="" class="w-100">
+                </div>
+                <div class="col-8 m-auto">
+                    <table>
+                        <tr>
+                            <td>Nama</td>
+                            <td>: {{ $member->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>NIP</td>
+                            <td>: {{ $member->nip }}</td>
+                        </tr>
+                        <tr>
+                            <td>Jenis Kelamin</td>
+                            <td>: {{ $member->gender }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         @endforeach
@@ -64,14 +50,16 @@
                 <div class="mb-3 row">
                     <label for="name" class="col-sm-2 col-form-label text-end">Name :</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="e.g. John Doe" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="e.g. John Doe"
+                            required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="" class="col-sm-2 col-form-label text-end">NIP :</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="nip" name="nip" placeholder="e.g. 3120500000" required>
+                        <input type="number" class="form-control" id="nip" name="nip" placeholder="e.g. 3120500000"
+                            required>
                     </div>
                 </div>
 
@@ -80,12 +68,14 @@
                     <div class="col-sm-10">
                         <div class="form-control border-0">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="gender" value="male" required>
+                                <input class="form-check-input" type="radio" name="gender" id="gender" value="male"
+                                    required>
                                 <label class="form-check-label" for="gender">Male</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="gender" value="female" required>
+                                <input class="form-check-input" type="radio" name="gender" id="gender" value="female"
+                                    required>
                                 <label class="form-check-label" for="gender">Female</label>
                             </div>
                         </div>

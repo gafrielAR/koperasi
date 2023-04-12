@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('installments', function (Blueprint $table) {
             $table->id();
             $table->string('prefix');
-            $table->string('transsaction_number');
             $table->date('date');
             $table->unsignedBigInteger('loan_id')->nullable();
+            $table->string('number_of_installment');
             $table->bigInteger('ammount');
             $table->timestamps();
 

@@ -20,9 +20,9 @@ class InstallmentFactory extends Factory
         static $increment = 1;
         return [
             'prefix' => $prefix,
-            'transsaction_number' => $prefix.$increment++,
             'date' => '2022-'.fake()->date($format = 'm-d', $max = 'now'),
             'loan_id' => fake()->randomDigitNotZero(),
+            'number_of_installment' => fake()->numberBetween($min = 1, $max = 40),
             'ammount' => fake()->numberBetween($min = 100000, $max = 10000000),
         ];
     }

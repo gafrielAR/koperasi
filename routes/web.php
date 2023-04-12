@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\SavingController;
 use App\Http\Controllers\Admin\LoanController;
+use App\Http\Controllers\Admin\InstallmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,15 @@ Route::name('admin.')->prefix('admin')->group(function () {
         Route::post('/create', [LoanController::class, 'create'])->name('create');
         Route::post('/update/{id}', [LoanController::class, 'update'])->name('update');
         Route::post('/delete/{id}', [LoanController::class, 'delete'])->name('delete');
+    });
+
+    Route::name('installment.')->prefix('installment')->group(function () {
+        Route::get('/', [InstallmentController::class, 'list'])->name('list');
+        Route::get('/{id}/edit', [InstallmentController::class, 'edit'])->name('edit');
+        Route::get('/{id}/read', [InstallmentController::class, 'read'])->name('read');
+        Route::post('/create', [InstallmentController::class, 'create'])->name('create');
+        Route::post('/update/{id}', [InstallmentController::class, 'update'])->name('update');
+        Route::post('/delete/{id}', [InstallmentController::class, 'delete'])->name('delete');
     });
 });
 

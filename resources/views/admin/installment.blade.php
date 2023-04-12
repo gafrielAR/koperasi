@@ -8,11 +8,11 @@
 @endif
 <div class="p-5 overflow-scroll hide-scrollbar">
     <div class="row">
-        <div class="col-sm-6">
-            <h1>PINJAMAN {{ $member->name }}</h1>
+        <div class="col-sm-4">
+            <h1>Savings</h1>
         </div>
 
-        <div class="col-sm-4 offset-sm-2">
+        <div class="col-sm-4 offset-sm-4">
             <div class="row d-flex justify-content-center">
                 <div class="col-sm-4">
                     <button type="button" class="btn btn-primary" id="addButton">
@@ -33,11 +33,12 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">No.Pinjaman</th>
+                <th scope="col">No.Transaksi</th>
                 <th scope="col">Tanggal</th>
-                <th scope="col">Pinjaman</th>
-                <th scope="col">Bunga</th>
-                <th scope="col">Angsuran</th>
+                <th scope="col">No. Pinjaman</th>
+                <th scope="col">Anggota</th>
+                <th scope="col">Ke</th>
+                <th scope="col">Nominal</th>
                 <th scope="col">Aksi</th>
             </tr>
             <tr class="warning no-result">
@@ -45,24 +46,25 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($member->loans as $loan)
+            @foreach ($installments as $installment)
             <tr>
                 <th scope="row">{{ $loop->index+1 }}</td>
-                <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0', STR_PAD_LEFT) }}</td>
-                <td>{{ $loan->date }}</td>
-                <td>Rp. {{ number_format($loan->loan, 2) }}-</td>
-                <td>Rp. {{ number_format($loan->interest, 2) }}-</td>
-                <td>Rp. {{ number_format($loan->installment, 2) }}-</td>
+                <td>{{ $installment->transaction_number }}</td>
+                <td>{{ $installment->date }}</td>
+                <td>{{ $installment->loan->loan_number }}</td>
+                <td>{{ $installment->loan->member->name }}</td>
+                <td>{{ $installment->number_of_installment }}</td>
+                <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
                 <td>
                     <span class="btn badge text-bg-primary">
-                        <a class="text-decoration-none text-light" id="editButton" href="#" data-id="{{ $loan->id }}">
+                        <a class="text-decoration-none text-light" id="editButton" href="#" data-id="{{ $installment->id }}">
                             <i class="bi bi-pencil-square"></i>
                             Edit
                         </a>
                     </span>
                     <span class="btn badge text-bg-danger">
                         <a class="text-decoration-none text-light" id="deleteButton" href="#"
-                            data-id="{{ $loan->id }}">
+                            data-id="{{ $installment->id }}">
                             <i class="bi bi-trash3"></i>
                             Hapus
                         </a>
@@ -73,7 +75,7 @@
         </tbody>
     </table>
 
-    {{-- {{ $member->loans>links("pagination::bootstrap-5") }} --}}
+    {{ $installments->links("pagination::bootstrap-5") }}
 </div>
 
 <!-- Modal Create -->
@@ -86,6 +88,15 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
+                    <label for="transaction_number" class="col-sm-2 col-form-label text-end">No. Transaksi <span
+                            class="text-danger fw-bold">*</span>:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="transaction_number" name="transaction_number"
+                            placeholder="e.g. SN12" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
                     <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
@@ -94,32 +105,51 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="member" class="col-sm-2 col-form-label text-end">Anggota :</label>
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
+                            class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control disabled" id="member" name="member" value="{{ $member->name }}" disabled readonly>
+                        <select name="member_id" id="member_id" class="form-control" required>
+                            <option value="" selected disabled>Loan Number</option>
+                            @foreach ($loans as $loan)
+                            <option value="{{ $loan->id }}">{{ $loan->loan_number }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="loan" class="col-sm-2 col-form-label text-end">Pinjaman :</label>
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
+                            class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="loan" name="loan"
+                        <select name="member_id" id="member_id" class="form-control" required>
+                            <option value="" selected disabled>choose member</option>
+                            @foreach ($members as $member)
+                            <option value="{{ $member->id }}">{{ $member->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="principal_saving" class="col-sm-2 col-form-label text-end">S. Pokok :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="1" class="form-control" id="principal_saving" name="principal_saving"
                             required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="interest" class="col-sm-2 col-form-label text-end">Bunga :</label>
+                    <label for="mandatory_saving" class="col-sm-2 col-form-label text-end">S. Wajib :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="interest" name="interest"
+                        <input type="number" min="1" class="form-control" id="mandatory_saving" name="mandatory_saving"
                             required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="installment" class="col-sm-2 col-form-label text-end">Angsuran :</label>
+                    <label for="voluntary_saving" class="col-sm-2 col-form-label text-end">S. Sukarela :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="installment" name="installment"
+                        <input type="number" min="1" class="form-control" id="voluntary_saving" name="voluntary_saving"
                             required>
                     </div>
                 </div>
@@ -160,6 +190,7 @@
                 console.log(response.result);
                 $('#exampleModal').modal('show');
                 $('#transaction_number').val(response.result.transaction_number),
+                $('#transaction_number').attr('disabled', true),
                 $('#date').val(response.result.date),
                 $('#date').attr('disabled', true),
                 $('#member_id').val(response.result.member_id),

@@ -12,13 +12,13 @@ class Installment extends Model
     protected $fillable = [
         'transaction_number',
         'date',
-        'number_of_loan',
+        'loan_id',
         'ammount',
     ];
 
     // protected $dates = 'date';
 
-    public function Loan() {
-        return $this->belongsTo(Loan::class, 'number_of_loan', 'id');
+    public function loan() {
+        return $this->belongsTo(Loan::class, 'loan_id', 'id');
     }
 }
