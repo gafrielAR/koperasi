@@ -6,38 +6,78 @@
     {{ session('success') }}
 </div>
 @endif
-<div class="p-5">
-    <h1>Loans</h1>
+<div class="p-5 overflow-scroll hide-scrollbar">
     <div class="row">
-        @foreach ($members as $member)
-        <div class="col-12 col-md-4 p-3">
-            <a href="{{ route('admin.loan.read', ['id' => $member->id]) }}" class="text-decoration-none text-black">
-                <div class="row shadow p-2">
-                    <div class="col-4">
-                        <img src="{{ asset('assets/img/profile.webp') }}" alt="" class="w-100">
-                    </div>
-                    <div class="col-8 m-auto">
-                        <table>
-                            <tr>
-                                <td>Nama</td>
-                                <td>: {{ $member->name }}</td>
-                            </tr>
-                            <tr>
-                                <td>NIP</td>
-                                <td>: {{ $member->nip }}</td>
-                            </tr>
-                            <tr>
-                                <td>Jenis Kelamin</td>
-                                <td>: {{ $member->gender }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </a>
+        <div class="col-sm-4">
+            <h1>Loans</h1>
         </div>
-        @endforeach
+
+        <div class="col-sm-4 offset-sm-4">
+            <div class="row d-flex justify-content-center">
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-primary" id="addButton">
+                        Add
+                    </button>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group pull-right">
+                        <input type="text" class="search form-control" placeholder="What you looking for?">
+                    </div>
+                    <span class="counter pull-right"></span>
+                </div>
+            </div>
+        </div>
     </div>
-    {{ $members->links("pagination::bootstrap-5") }}
+
+    <table class="table table-hover table-bordered results">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">No.Transaksi</th>
+                <th scope="col">Anggota</th>
+                <th scope="col">Tanggal</th>
+                <th scope="col">Pinjaman</th>
+                <th scope="col">Bunga</th>
+                <th scope="col">Masa</th>
+                <th scope="col">Angsuran</th>
+                <th scope="col">Aksi</th>
+            </tr>
+            <tr class="warning no-result">
+                <td colspan="4"><i class="fa fa-warning"></i> No result</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($loans as $loan)
+            <tr>
+                <th scope="row">{{ $loop->index+1 }}</td>
+                <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0', STR_PAD_LEFT) }}</td>
+                <td>{{ $loan->member->name }}</td>
+                <td>{{ $loan->date }}</td>
+                <td>Rp. {{ number_format($loan->loan, 2) }}-</td>
+                <td>Rp. {{ number_format($loan->interest, 2) }}-</td>
+                <td>{{ $loan->term }} Bulan</td>
+                <td>Rp. {{ number_format($loan->installment, 2) }}-</td>
+                <td>
+                    <span class="btn badge text-bg-primary">
+                        <a class="text-decoration-none text-light" id="editButton" href="#" data-id="{{ $loan->id }}">
+                            <i class="bi bi-pencil-square"></i>
+                            Edit
+                        </a>
+                    </span>
+                    <span class="btn badge text-bg-danger">
+                        <a class="text-decoration-none text-light" id="deleteButton" href="#"
+                            data-id="{{ $loan->id }}">
+                            <i class="bi bi-trash3"></i>
+                            Hapus
+                        </a>
+                    </span>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    {{ $loans->links("pagination::bootstrap-5") }}
 </div>
 
 <!-- Modal Create -->
@@ -50,37 +90,55 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
-                    <label for="name" class="col-sm-2 col-form-label text-end">Name :</label>
+                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
+                            class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="e.g. John Doe"
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
+                            class="text-danger fw-bold">*</span>:</label>
+                    <div class="col-sm-10">
+                        <select name="member_id" id="member_id" class="form-control" required>
+                            <option value="" selected disabled>choose member</option>
+                            @foreach ($members as $member)
+                            <option value="{{ $member->id }}">{{ $member->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="term" class="col-sm-2 col-form-label text-end">Masa :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="1" class="form-control" id="term" name="term" placeholder="Bulan"
                             required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="" class="col-sm-2 col-form-label text-end">NIP :</label>
+                    <label for="loan" class="col-sm-2 col-form-label text-end">Pinjaman :</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" id="nip" name="nip" placeholder="e.g. 3120500000"
+                        <input type="number" min="1" class="form-control" id="loan" name="loan"
                             required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="gender" class="col-sm-2 col-form-label text-end">Gender :</label>
+                    <label for="interest" class="col-sm-2 col-form-label text-end">Bunga :</label>
                     <div class="col-sm-10">
-                        <div class="form-control border-0">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="gender" value="male"
-                                    required>
-                                <label class="form-check-label" for="gender">Male</label>
-                            </div>
+                        <input type="number" min="1" class="form-control" id="interest" name="interest"
+                            required>
+                    </div>
+                </div>
 
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="gender" id="gender" value="female"
-                                    required>
-                                <label class="form-check-label" for="gender">Female</label>
-                            </div>
-                        </div>
+                <div class="mb-3 row">
+                    <label for="installment" class="col-sm-2 col-form-label text-end">Angsuran :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="1" class="form-control" id="installment" name="installment"
+                            required>
                     </div>
                 </div>
 
@@ -114,14 +172,19 @@
     $('body').on('click', '#editButton', function(e) {
         var id = $(this).data('id');
         $.ajax({
-            url: 'member/' + id + '/edit',
+            url: 'loan/' + id + '/edit',
             type: 'GET',
             success: function(response) {
                 console.log(response.result);
                 $('#exampleModal').modal('show');
-                $('#name').val(response.result.name);
-                $('#nip').val(response.result.nip);
-                $("input[name=gender][value=" + response.result.gender + "]").prop('checked', true);
+                $('#date').val(response.result.date),
+                $('#date').attr('disabled', true),
+                $('#member_id').val(response.result.member_id),
+                $('#member_id').attr('disabled', true),
+                $('#term').val(response.result.term),
+                $('#loan').val(response.result.loan),
+                $('#interest').val(response.result.interest),
+                $('#installment').val(response.result.installment),
                 $('#save').click(function() {
                     save(id);
                 });
@@ -131,10 +194,10 @@
 
     // 04_PROSES Delete
     $('body').on('click', '#deleteButton', function(e) {
-        if (confirm('Are you fucking sure?') == true) {
+        if (confirm('are you sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
-                url: 'member/delete/' + id,
+                url: 'loan/delete/' + id,
                 type: 'POST',
                 success: function(html) {
                     location.reload();
@@ -146,10 +209,10 @@
     // fungsi simpan dan update
     function save(id = '') {
         if (id == '') {
-            var action = 'member/create';
+            var action = 'loan/create';
             var method = 'POST';
         } else {
-            var action = 'member/update/' + id;
+            var action = 'loan/update/' + id;
             var method = 'POST';
         }
         console.log(action);
@@ -157,9 +220,12 @@
             url: action,
             type: method,
             data: {
-                name: $('#name').val(),
-                nip: $('#nip').val(),
-                gender: $('#gender:checked').val(),
+                date: $('#date').val(),
+                member_id: $('#member_id').val(),
+                term: $('#term').val(),
+                loan: $('#loan').val(),
+                interest: $('#interest').val(),
+                installment: $('#installment').val(),
             },
             success: function(html) {
                 location.reload();
@@ -167,9 +233,39 @@
         });
     }   
     $('#exampleModal').on('hidden.bs.modal', function() {
-        $('#name').val();
-        $('#nip').val();
-        $("input[name='gender']").prop('checked', true).val();
+        $('#date').val();
+        $('#member_id').val();
+        $('#term').val();
+        $('#loan').val();
+        $('#interest').val();
+        $('#installment').val();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $(".search").keyup(function () {
+            var searchTerm = $(".search").val();
+            var listItem = $('.results tbody').children('tr');
+            var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+
+            $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
+                return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            }});
+
+            $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
+                $(this).attr('visible','false');
+            });
+
+            $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
+                $(this).attr('visible','true');
+            });
+
+            var jobCount = $('.results tbody tr[visible="true"]').length;
+            $('.counter').text(jobCount + ' item');
+
+            if(jobCount == '0') {$('.no-result').show();}
+            else {$('.no-result').hide();}
+        });
     });
 </script>
 @endsection

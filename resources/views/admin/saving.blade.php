@@ -88,15 +88,6 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
-                    <label for="transaction_number" class="col-sm-2 col-form-label text-end">No. Transaksi <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="transaction_number" name="transaction_number"
-                            placeholder="e.g. SN12" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
@@ -176,8 +167,6 @@
             success: function(response) {
                 console.log(response.result);
                 $('#exampleModal').modal('show');
-                $('#transaction_number').val(response.result.transaction_number),
-                $('#transaction_number').attr('disabled', true),
                 $('#date').val(response.result.date),
                 $('#date').attr('disabled', true),
                 $('#member_id').val(response.result.member_id),
@@ -194,7 +183,7 @@
 
     // 04_PROSES Delete
     $('body').on('click', '#deleteButton', function(e) {
-        if (confirm('Are you fucking sure?') == true) {
+        if (confirm('are you sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
                 url: 'saving/delete/' + id,
@@ -220,7 +209,6 @@
             url: action,
             type: method,
             data: {
-                transaction_number: $('#transaction_number').val(),
                 date: $('#date').val(),
                 member_id: $('#member_id').val(),
                 principal_saving: $('#principal_saving').val(),
@@ -233,7 +221,6 @@
         });
     }   
     $('#exampleModal').on('hidden.bs.modal', function() {
-        $('#transaction_number').val();
         $('#date').val();
         $('#member_id').val();
         $('#principal_saving').val();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\Member;
+use App\Models\Saving;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,9 +18,10 @@ class LoanController extends Controller
 
     public function list()
     {
-        $members = Member::paginate(9);
+        $loans = Loan::paginate(9);
+        $members = Member::all();
 
-        return view('admin.loan', compact(['members']));
+        return view('admin.loan', compact(['loans', 'members']));
     }
 
     public function read($id)
@@ -32,15 +34,20 @@ class LoanController extends Controller
     public function create(Request $request)
     {
         Validator::make($request->all(), [
+            'member_id' => 'required|exists:members,id',
             'loan_number' => 'required',
             'date' => 'required|date',
+            'term' => 'required|numeric',
             'loan' => 'required|numeric',
             'interest' => 'required|numeric',
             'installment' => 'required|numeric',
         ]);
 
         $data = [
+            'prefix' => 'LN',
+            'member_id' => $request->member_id,
             'date' => $request->date,
+            'term' => $request->term,
             'loan' => $request->loan,
             'interest' => $request->interest,
             'installment' => $request->installment,
@@ -60,21 +67,23 @@ class LoanController extends Controller
     public function update(Request $request, $id)
     {
         Validator::make($request->all(), [
-            'transaction_number' => 'required',
-            'date' => 'required|date',
             'member_id' => 'required|exists:members,id',
-            'principal_saving' => 'required|numeric',
-            'mandatory_saving' => 'required|numeric',
-            'voluntary_saving' => 'required|numeric',
+            'loan_number' => 'required',
+            'date' => 'required|date',
+            'term' => 'required|numeric',
+            'loan' => 'required|numeric',
+            'interest' => 'required|numeric',
+            'installment' => 'required|numeric',
         ]);
 
         $data = [
-            'transaction_number' => $request->transaction_number,
-            'date' => $request->date,
+            'prefix' => 'LN',
             'member_id' => $request->member_id,
-            'principal_saving' => $request->principal_saving,
-            'mandatory_saving' => $request->mandatory_saving,
-            'voluntary_saving' => $request->voluntary_saving,
+            'date' => $request->date,
+            'term' => $request->term,
+            'loan' => $request->loan,
+            'interest' => $request->interest,
+            'installment' => $request->installment,
         ];
 
         Loan::findOrFail($id)->update($data);
@@ -85,6 +94,6 @@ class LoanController extends Controller
     {
         Loan::findOrFail($id)->delete();
 
-        return redirect()->route('admin.saving.list')->with('success', "Data Deleted Successfully");
+        return redirect()->route('admin.loan.list')->with('success', "Data Deleted Successfully");
     }
 }
