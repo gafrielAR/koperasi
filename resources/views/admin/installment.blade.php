@@ -34,11 +34,12 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">No.Transaksi</th>
-                <th scope="col">Tanggal</th>
-                <th scope="col">No. Pinjaman</th>
                 <th scope="col">Anggota</th>
-                <th scope="col">Ke</th>
-                <th scope="col">Nominal</th>
+                <th scope="col">Tanggal</th>
+                <th scope="col">Pinjaman</th>
+                <th scope="col">Bunga</th>
+                <th scope="col">Masa</th>
+                <th scope="col">Angsuran</th>
                 <th scope="col">Aksi</th>
             </tr>
             <tr class="warning no-result">
@@ -49,12 +50,13 @@
             @foreach ($installments as $installment)
             <tr>
                 <th scope="row">{{ $loop->index+1 }}</td>
-                <td>{{ $installment->transaction_number }}</td>
+                <td>{{ $installment->prefix }}{{ str_pad($installment->id, 6, '0', STR_PAD_LEFT) }}</td>
+                <td>{{ $installment->member->name }}</td>
                 <td>{{ $installment->date }}</td>
-                <td>{{ $installment->loan->loan_number }}</td>
-                <td>{{ $installment->loan->member->name }}</td>
-                <td>{{ $installment->number_of_installment }}</td>
-                <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
+                <td>Rp. {{ number_format($installment->loan, 2) }}-</td>
+                <td>Rp. {{ number_format($installment->interest, 2) }}-</td>
+                <td>{{ $installment->term }} Bulan</td>
+                <td>Rp. {{ number_format($installment->installment, 2) }}-</td>
                 <td>
                     <span class="btn badge text-bg-primary">
                         <a class="text-decoration-none text-light" id="editButton" href="#" data-id="{{ $installment->id }}">
@@ -63,8 +65,7 @@
                         </a>
                     </span>
                     <span class="btn badge text-bg-danger">
-                        <a class="text-decoration-none text-light" id="deleteButton" href="#"
-                            data-id="{{ $installment->id }}">
+                        <a class="text-decoration-none text-light" id="deleteButton" href="#" data-id="{{ $installment->id }}">
                             <i class="bi bi-trash3"></i>
                             Hapus
                         </a>
@@ -88,15 +89,6 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
-                    <label for="transaction_number" class="col-sm-2 col-form-label text-end">No. Transaksi <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="transaction_number" name="transaction_number"
-                            placeholder="e.g. SN12" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
@@ -105,7 +97,7 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">No. Pinjaman<span
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <select name="member_id" id="member_id" class="form-control" required>
@@ -133,7 +125,7 @@
                 <div class="mb-3 row">
                     <label for="principal_saving" class="col-sm-2 col-form-label text-end">Angsuran Ke :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="principal_saving" name="principal_saving"
+                        <input type="number" min="1" class="form-control" id="term" name="term" placeholder="Bulan"
                             required>
                     </div>
                 </div>
@@ -141,8 +133,7 @@
                 <div class="mb-3 row">
                     <label for="mandatory_saving" class="col-sm-2 col-form-label text-end"> Nominal :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="mandatory_saving" name="mandatory_saving"
-                            required>
+                        <input type="number" min="1" class="form-control" id="loan" name="loan" required>
                     </div>
                 </div>
                 <div style="display: block; text-align: -webkit-center;">
@@ -175,20 +166,19 @@
     $('body').on('click', '#editButton', function(e) {
         var id = $(this).data('id');
         $.ajax({
-            url: 'saving/' + id + '/edit',
+            url: 'installment/' + id + '/edit',
             type: 'GET',
             success: function(response) {
                 console.log(response.result);
                 $('#exampleModal').modal('show');
-                $('#transaction_number').val(response.result.transaction_number),
-                $('#transaction_number').attr('disabled', true),
                 $('#date').val(response.result.date),
                 $('#date').attr('disabled', true),
                 $('#member_id').val(response.result.member_id),
                 $('#member_id').attr('disabled', true),
-                $('#principal_saving').val(response.result.principal_saving),
-                $('#mandatory_saving').val(response.result.mandatory_saving),
-                $('#voluntary_saving').val(response.result.voluntary_saving),
+                $('#term').val(response.result.term),
+                $('#loan').val(response.result.loan),
+                $('#interest').val(response.result.interest),
+                $('#installment').val(response.result.installment),
                 $('#save').click(function() {
                     save(id);
                 });
@@ -198,10 +188,10 @@
 
     // 04_PROSES Delete
     $('body').on('click', '#deleteButton', function(e) {
-        if (confirm('Are you fucking sure?') == true) {
+        if (confirm('are you sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
-                url: 'saving/delete/' + id,
+                url: 'installment/delete/' + id,
                 type: 'POST',
                 success: function(html) {
                     location.reload();
@@ -213,10 +203,10 @@
     // fungsi simpan dan update
     function save(id = '') {
         if (id == '') {
-            var action = 'saving/create';
+            var action = 'installment/create';
             var method = 'POST';
         } else {
-            var action = 'saving/update/' + id;
+            var action = 'installment/update/' + id;
             var method = 'POST';
         }
         console.log(action);
@@ -224,12 +214,12 @@
             url: action,
             type: method,
             data: {
-                transaction_number: $('#transaction_number').val(),
                 date: $('#date').val(),
                 member_id: $('#member_id').val(),
-                principal_saving: $('#principal_saving').val(),
-                mandatory_saving: $('#mandatory_saving').val(),
-                voluntary_saving: $('#voluntary_saving').val(),
+                term: $('#term').val(),
+                loan: $('#loan').val(),
+                interest: $('#interest').val(),
+                installment: $('#installment').val(),
             },
             success: function(html) {
                 location.reload();
@@ -237,12 +227,12 @@
         });
     }   
     $('#exampleModal').on('hidden.bs.modal', function() {
-        $('#transaction_number').val();
         $('#date').val();
         $('#member_id').val();
-        $('#principal_saving').val();
-        $('#mandatory_saving').val();
-        $('#voluntary_saving').val();
+        $('#term').val();
+        $('#loan').val();
+        $('#interest').val();
+        $('#installment').val();
     });
 </script>
 <script>
@@ -251,22 +241,22 @@
             var searchTerm = $(".search").val();
             var listItem = $('.results tbody').children('tr');
             var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
-            
+
             $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
                 return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
             }});
-            
+
             $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
                 $(this).attr('visible','false');
             });
-            
+
             $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
                 $(this).attr('visible','true');
             });
-            
+
             var jobCount = $('.results tbody tr[visible="true"]').length;
             $('.counter').text(jobCount + ' item');
-            
+
             if(jobCount == '0') {$('.no-result').show();}
             else {$('.no-result').hide();}
         });
