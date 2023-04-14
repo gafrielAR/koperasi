@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <table class="table table-hover table-bordered results">
+     <table class="table table-hover table-bordered results">
         <thead>
             <tr>
                 <th scope="col">#</th>

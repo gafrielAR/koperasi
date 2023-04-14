@@ -194,7 +194,7 @@
 
     // 04_PROSES Delete
     $('body').on('click', '#deleteButton', function(e) {
-        if (confirm('Are you fucking sure?') == true) {
+        if (confirm('Are you sure deleting this data ?') == true) {
             var id = $(this).data('id');
             $.ajax({
                 url: 'saving/delete/' + id,

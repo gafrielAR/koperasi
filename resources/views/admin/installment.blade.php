@@ -9,7 +9,7 @@
 <div class="p-5 overflow-scroll hide-scrollbar">
     <div class="row">
         <div class="col-sm-4">
-            <h1>Savings</h1>
+            <h1>Installment</h1>
         </div>
 
         <div class="col-sm-4 offset-sm-4">
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">No. Pinjaman<span
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <select name="member_id" id="member_id" class="form-control" required>
@@ -131,7 +131,7 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="principal_saving" class="col-sm-2 col-form-label text-end">S. Pokok :</label>
+                    <label for="principal_saving" class="col-sm-2 col-form-label text-end">Angsuran Ke :</label>
                     <div class="col-sm-10">
                         <input type="number" min="1" class="form-control" id="principal_saving" name="principal_saving"
                             required>
@@ -139,21 +139,12 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="mandatory_saving" class="col-sm-2 col-form-label text-end">S. Wajib :</label>
+                    <label for="mandatory_saving" class="col-sm-2 col-form-label text-end"> Nominal :</label>
                     <div class="col-sm-10">
                         <input type="number" min="1" class="form-control" id="mandatory_saving" name="mandatory_saving"
                             required>
                     </div>
                 </div>
-
-                <div class="mb-3 row">
-                    <label for="voluntary_saving" class="col-sm-2 col-form-label text-end">S. Sukarela :</label>
-                    <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="voluntary_saving" name="voluntary_saving"
-                            required>
-                    </div>
-                </div>
-
                 <div style="display: block; text-align: -webkit-center;">
                     <button class="btn btn-primary mb-3" id="save"> Save</button>
                 </div>
