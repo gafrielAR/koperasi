@@ -34,12 +34,11 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">No.Transaksi</th>
-                <th scope="col">Anggota</th>
                 <th scope="col">Tanggal</th>
-                <th scope="col">Pinjaman</th>
-                <th scope="col">Bunga</th>
-                <th scope="col">Masa</th>
-                <th scope="col">Angsuran</th>
+                <th scope="col">No.Pinjaman</th>
+                <th scope="col">Anggota</th>
+                <th scope="col">Ke</th>
+                <th scope="col">Nominal</th>
                 <th scope="col">Aksi</th>
             </tr>
             <tr class="warning no-result">
@@ -51,27 +50,29 @@
             <tr>
                 <th scope="row">{{ $loop->index+1 }}</td>
                 <td>{{ $installment->prefix }}{{ str_pad($installment->id, 6, '0', STR_PAD_LEFT) }}</td>
-                <td>{{ $installment->member->name }}</td>
                 <td>{{ $installment->date }}</td>
-                <td>Rp. {{ number_format($installment->loan, 2) }}-</td>
-                <td>Rp. {{ number_format($installment->interest, 2) }}-</td>
-                <td>{{ $installment->term }} Bulan</td>
-                <td>Rp. {{ number_format($installment->installment, 2) }}-</td>
+                <td>{{ $installment->loan->prefix }}{{ str_pad($installment->loan->id, 6, '0', STR_PAD_LEFT) }}</td>
+                <td>{{ $installment->loan->member->nip }} - {{ $installment->loan->member->name }}</td>
+                <td>{{ $installment->installment_number }}</td>
+                <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
                 <td>
                     <span class="btn badge text-bg-primary">
-                        <a class="text-decoration-none text-light" id="editButton" href="#" data-id="{{ $installment->id }}">
+                        <a class="text-decoration-none text-light" id="editButton" href="#"
+                            data-id="{{ $installment->id }}">
                             <i class="bi bi-pencil-square"></i>
                             Edit
                         </a>
                     </span>
                     <span class="btn badge text-bg-danger">
-                        <a class="text-decoration-none text-light" id="deleteButton" href="#" data-id="{{ $installment->id }}">
+                        <a class="text-decoration-none text-light" id="deleteButton" href="#"
+                            data-id="{{ $installment->id }}">
                             <i class="bi bi-trash3"></i>
                             Hapus
                         </a>
                     </span>
                 </td>
             </tr>
+
             @endforeach
         </tbody>
     </table>
@@ -80,7 +81,7 @@
 </div>
 
 <!-- Modal Create -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -101,7 +102,7 @@
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <select name="member_id" id="member_id" class="form-control" required>
-                            <option value="" selected disabled>choose member</option>
+                            <option value="" selected disabled>Pilih Anggota</option>
                             @foreach ($members as $member)
                             <option value="{{ $member->id }}">{{ $member->name }}</option>
                             @endforeach
@@ -110,31 +111,25 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="term" class="col-sm-2 col-form-label text-end">Masa :</label>
+                    <label for="loan_id" class="col-sm-2 col-form-label text-end">No.Pinjaman <span
+                            class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="term" name="term" placeholder="Bulan"
-                            required>
+                        <select name="loan_id" id="loan_id" class="form-control" disabled required></select>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="loan" class="col-sm-2 col-form-label text-end">Pinjaman :</label>
+                    <label for="installment_number" class="col-sm-2 col-form-label text-end">Ke :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="loan" name="loan" required>
+                        <input type="number" min="1" class="form-control" id="installment_number"
+                            name="installment_number" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="interest" class="col-sm-2 col-form-label text-end">Bunga :</label>
+                    <label for="ammount" class="col-sm-2 col-form-label text-end">ammount :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="interest" name="interest" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="installment" class="col-sm-2 col-form-label text-end">Angsuran :</label>
-                    <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="installment" name="installment" required>
+                        <input type="number" min="1" class="form-control" id="ammount" name="ammount" required>
                     </div>
                 </div>
 
@@ -177,10 +172,10 @@
                 $('#date').attr('disabled', true),
                 $('#member_id').val(response.result.member_id),
                 $('#member_id').attr('disabled', true),
-                $('#term').val(response.result.term),
-                $('#loan').val(response.result.loan),
-                $('#interest').val(response.result.interest),
-                $('#installment').val(response.result.installment),
+                $('#loan_id').val(response.result.loan_id),
+                $('#loan_id').attr('disabled', true),
+                $('#installment_number').val(response.result.installment_number),
+                $('#ammount').val(response.result.ammount),
                 $('#save').click(function() {
                     save(id);
                 });
@@ -218,10 +213,9 @@
             data: {
                 date: $('#date').val(),
                 member_id: $('#member_id').val(),
-                term: $('#term').val(),
-                loan: $('#loan').val(),
-                interest: $('#interest').val(),
-                installment: $('#installment').val(),
+                loan_id: $('#loan_id').val(),
+                installment_number: $('#installment_number').val(),
+                ammount: $('#ammount').val(),
             },
             success: function(html) {
                 location.reload();
@@ -231,10 +225,9 @@
     $('#exampleModal').on('hidden.bs.modal', function() {
         $('#date').val();
         $('#member_id').val();
-        $('#term').val();
-        $('#loan').val();
-        $('#interest').val();
-        $('#installment').val();
+        $('#loan_id').val();
+        $('#installment_number').val();
+        $('#ammount').val();
     });
 </script>
 <script>
@@ -261,6 +254,43 @@
 
             if(jobCount == '0') {$('.no-result').show();}
             else {$('.no-result').hide();}
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#member_id').select2({
+            dropdownParent: "#exampleModal",
+            theme: 'bootstrap-5'
+        });
+        
+        $('#loan_id').select2({
+            dropdownParent: "#exampleModal",
+            theme: 'bootstrap-5'
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#member_id').on('change', function () {
+            var id_member = this.value;
+            $('#loan_id').html('');
+            $('#loan_id').removeAttr('disabled');
+            $.ajax({
+                url: "{{ route('admin.installment.api_loan') }}",
+                type: "POST",
+                data: {
+                    member_id: id_member,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    $('#loan_id').html('<option value="">-- Pilih Pinjaman --</option>');
+                    $.each(result.loans, function (key, value) {
+                        $("#loan_id").append('<option value="' + value.id + '">' + value.prefix + ("0000000" + value.id).slice(-6) + '</option>');
+                    });
+                }
+            });
         });
     });
 </script>

@@ -29,6 +29,18 @@
         .h-100vh {
             height: 100vh;
         }
+
+        .h-20 {
+            height: 20vh;
+        }
+
+        .h-70 {
+            height: 70vh;
+        }
+
+        .h-10 {
+            height: 10vh;
+        }
     </style>
 </head>
 
@@ -40,78 +52,60 @@
             overflow: hidden;">
         <div class="row">
             <div class="col-md-6 offset-md-6 p-0 h-100vh">
-                <div class="h-100 d-flex align-items-center justify-content-center">
-                    <div class="col-12 p-0 m-auto">
-                        <center>
-                            <h1>Selamat Datang</h1>
-                            <h4 class="text-secondary">Log in di bawah </h4>
-                        </center>
+                <div class="h-20 p-3">
+                    <img src="{{ asset('assets/img/logo-login.png') }}" alt="">
+                </div>
+                <div class="h-70 d-flex align-items-center">
+                    <div class="col-6 m-auto">
+                        <div>
+                            <h2 class="mb-2">Selamat Datang</h2>
+                            <h6 class="text-secondary mt-2 mb-4">Log in di bawah untuk akses akun anda</h6>
+                        </div>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    {{ __('Email')}}
+                                </label>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Masukkan alamat email" autofocus>
 
-                            <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email
-                                    Address')
-                                    }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                    @error('email')
+                                @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror
-                                </div>
+                                @enderror
                             </div>
-
-                            <div class="row mb-3">
-                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password')
-                                    }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="current-password">
-
-                                    @error('password')
+                            <div class="mb-3">
+                                <label for="password" class="form-label">{{ __('Password') }}</label>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                                    required placeholder="Masukan password" autocomplete="current-password">
+                                
+                                @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                    @enderror
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : ''
+                                        }}>
+                                
+                                    <label class="form-check-label" for="remember">
+                                        {{ __('Ingat saya') }}
+                                    </label>
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-6 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{
-                                            old('remember') ? 'checked' : '' }}>
-
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
-
-                                    @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                    @endif
-                                </div>
-                            </div>
+                            <input type="submit" value="Masuk" class="btn rounded-pill text-bg-primary col-12 ">
                         </form>
                     </div>
+                </div>
+                <div class="h-10 p-3 d-flex align-items-end justify-content-center">
+                    <p class="text-body-secondary m-0">
+                        ©2023 Koperasi KDH PENS. All rights reserved.
+                    </p>
                 </div>
             </div>
         </div>

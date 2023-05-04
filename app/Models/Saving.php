@@ -10,7 +10,6 @@ class Saving extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaction_number',
         'date',
         'member_id',
         'principal_saving',

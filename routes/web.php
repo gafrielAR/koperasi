@@ -58,6 +58,7 @@ Route::name('admin.')->prefix('admin')->group(function () {
         Route::get('/{id}/edit', [InstallmentController::class, 'edit'])->name('edit');
         Route::get('/{id}/read', [InstallmentController::class, 'read'])->name('read');
         Route::post('/create', [InstallmentController::class, 'create'])->name('create');
+        Route::post('/api/loan', [InstallmentController::class, 'api_loan'])->name('api_loan');
         Route::post('/update/{id}', [InstallmentController::class, 'update'])->name('update');
         Route::post('/delete/{id}', [InstallmentController::class, 'delete'])->name('delete');
     });

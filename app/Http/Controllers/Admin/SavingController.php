@@ -25,7 +25,6 @@ class SavingController extends Controller
 
     public function create(Request $request) {
         Validator::make($request->all(), [
-            'transaction_number'    => 'required',
             'date'                  => 'required|date',
             'member_id'             => 'required|exists:members,id',
             'principal_saving'      => 'required|numeric',
@@ -34,7 +33,6 @@ class SavingController extends Controller
         ]);
 
         $data = [
-            'transaction_number'    => $request->transaction_number,
             'date'                  => $request->date,
             'member_id'             => $request->member_id,
             'principal_saving'      => $request->principal_saving,
