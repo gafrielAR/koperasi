@@ -1,0 +1,78 @@
+.ci-1 {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-size: cover;
+}
+.ci-2 {
+    display: inline-block;
+    width: 2em;
+    height: 2em;
+    background-size: cover;
+}
+.ci-3 {
+    display: inline-block;
+    width: 3em;
+    height: 3em;
+    background-size: cover;
+}
+.ci-angsuran-jumlah-pengangsur {
+    background-image: url('svg/angsuran-jumlah-pengangsur.svg');
+}
+.ci-angsuran-total-angsuran {
+    background-image: url('svg/angsuran-total-angsuran.svg');
+}
+.ci-angsuran-total-kembali {
+    background-image: url('svg/angsuran-total-kembali.svg');
+}
+.ci-dashboard-line {
+    background-image: url('svg/dashboard-line.svg');
+}
+.ci-dashboard-total-angsuran {
+    background-image: url('svg/dashboard-total-angsuran.svg');
+}
+.ci-dashboard-total-pinjaman {
+    background-image: url('svg/dashboard-total-pinjaman.svg');
+}
+.ci-dashboard-total-simpanan {
+    background-image: url('svg/dashboard-total-simpanan.svg');
+}
+.ci-dashboard-uang-keluar {
+    background-image: url('svg/dashboard-uang-keluar.svg');
+}
+.ci-dashboard-uang-masuk {
+    background-image: url('svg/dashboard-uang-masuk.svg');
+}
+.ci-folder-2 {
+    background-image: url('svg/folder2.svg');
+}
+.ci-user-group {
+    background-image: url('svg/mdi_user-group.svg');
+}
+.ci-money {
+    background-image: url('svg/money.svg');
+}
+.ci-money-send {
+    background-image: url('svg/money-send.svg');
+}
+.ci-pinjaman-jumlah-pinjaman {
+    background-image: url('svg/pinjaman-jumlah-pinjaman.svg');
+}
+.ci-pinjaman-total-kembali {
+    background-image: url('svg/pinjaman-total-kembali.svg');
+}
+.ci-pinjaman-total-pinjaman {
+    background-image: url('svg/pinjaman-total-pinjaman.svg');
+}
+.ci-riwayat-transaksi {
+    background-image: url('svg/riwayat-transaksi.svg');
+}
+.ci-simpanan-simpanan-pokok {
+    background-image: url('svg/simpanan-simpanan-pokok.svg');
+}
+.ci-simpanan-simpanan-sukarela {
+    background-image: url('svg/simpanan-simpanan-sukarela.svg');
+}
+.ci-simpanan-simpanan-wajib {
+    background-image: url('svg/simpanan-simpanan-wajib.svg');
+}
