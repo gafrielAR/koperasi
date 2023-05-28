@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Saving;
 use App\Models\Member;
 
 class AdminController extends Controller
@@ -14,8 +15,9 @@ class AdminController extends Controller
     }
 
     public function dashboard() {
-        $members = Member::with(['savings', 'loans'])->paginate(9);
+        $savings = Saving::with('member')->get();
+        $members = Member::all();
 
-        return view('admin.dashboard', compact('members'));
+        return view('admin.dashboard', compact(['savings', 'members']));
     }
 }

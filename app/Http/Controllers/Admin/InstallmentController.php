@@ -7,6 +7,7 @@ use App\Models\Installment;
 use App\Models\Loan;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class InstallmentController extends Controller
 {
@@ -24,33 +25,36 @@ class InstallmentController extends Controller
         return view('admin.installment', compact(['installments', 'members', 'loans']));
     }
 
+    public function api_loan(Request $request) {
+        $data['loans'] = Loan::where('member_id', $request->member_id)->get();
+
+        return response()->json($data);
+    }
+    
     public function create(Request $request)
     {
         Validator::make($request->all(), [
-            'transaction_number' => 'required',
             'date' => 'required|date',
-            'member_id' => 'required|exists:members,id',
-            'principal_saving' => 'required|numeric',
-            'mandatory_saving' => 'required|numeric',
-            'voluntary_saving' => 'required|numeric',
+            'loan_id' => 'required|exists:loans,id',
+            'installment_number' => 'required|numeric',
+            'ammount' => 'required|numeric'
         ]);
 
         $data = [
-            'transaction_number' => $request->transaction_number,
+            'prefix' => 'IN',
             'date' => $request->date,
-            'member_id' => $request->member_id,
-            'principal_saving' => $request->principal_saving,
-            'mandatory_saving' => $request->mandatory_saving,
-            'voluntary_saving' => $request->voluntary_saving,
+            'loan_id' => $request->loan_id,
+            'installment_number' => $request->installment_number,
+            'ammount' => $request->ammount,
         ];
 
-        Saving::create($data);
+        Installment::create($data);
         return response()->json(['success' => "Data Saved Successfully"]);
     }
 
     public function edit($id)
     {
-        $data = Saving::findOrFail($id);
+        $data = Installment::findOrFail($id);
 
         return response()->json(['result' => $data]);
     }
@@ -58,30 +62,27 @@ class InstallmentController extends Controller
     public function update(Request $request, $id)
     {
         Validator::make($request->all(), [
-            'transaction_number' => 'required',
             'date' => 'required|date',
-            'member_id' => 'required|exists:members,id',
-            'principal_saving' => 'required|numeric',
-            'mandatory_saving' => 'required|numeric',
-            'voluntary_saving' => 'required|numeric',
+            'loan_id' => 'required|exists:loans,id',
+            'installment_number' => 'required|numeric',
+            'ammount' => 'required|numeric'
         ]);
 
         $data = [
-            'transaction_number' => $request->transaction_number,
+            'prefix' => 'IN',
             'date' => $request->date,
-            'member_id' => $request->member_id,
-            'principal_saving' => $request->principal_saving,
-            'mandatory_saving' => $request->mandatory_saving,
-            'voluntary_saving' => $request->voluntary_saving,
+            'loan_id' => $request->loan_id,
+            'installment_number' => $request->installment_number,
+            'ammount' => $request->ammount,
         ];
 
-        Saving::findOrFail($id)->update($data);
+        Installment::findOrFail($id)->update($data);
         return response()->json(['success' => "Data Updated Successfully"]);
     }
 
     public function delete($id)
     {
-        Saving::findOrFail($id)->delete();
+        Installment::findOrFail($id)->delete();
 
         return redirect()->route('admin.saving.list')->with('success', "Data Deleted Successfully");
     }

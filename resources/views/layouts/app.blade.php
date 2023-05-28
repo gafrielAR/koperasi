@@ -19,6 +19,11 @@
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
+    {{-- Select2 CSS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
     {{-- style --}}
     <style>
         /* Chrome, Safari, Edge, Opera */
@@ -65,11 +70,11 @@
         }
 
         .border-top-left-rounded {
-            border-top-left-radius: 6%;
+            border-top-left-radius: 60px;
         }
 
         .border-rounded {
-            border-radius: 6%
+            border-radius: 40px
         }
 
         .dropdown-toggle::after {
@@ -193,7 +198,7 @@
                         </li>
                         <li>
                             <a href="{{ route('admin.installment.list') }}" 
-                                class="nav-link {{ Route::currentRouteName() == '' ? 'active' : 'link-dark' }}">
+                                class="nav-link {{ Route::currentRouteName() == 'admin.installment.list' ? 'active' : 'link-dark' }}">
                                 <svg class="bi pe-none me-2" width="16" height="16">
                                     <use xlink:href="#people-circle"></use>
                                 </svg>
@@ -214,7 +219,11 @@
 
     {{-- Bootstrap --}}
     <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {{-- Jquery --}}
     <script src="{{ asset('assets/Jquery/jquery-3.6.4.min.js') }}"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+    {{-- Custom JS per-page --}}
     @yield('script')
 </body>
 

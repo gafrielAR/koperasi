@@ -204,7 +204,6 @@
             var action = 'saving/update/' + id;
             var method = 'POST';
         }
-        console.log(action);
         $.ajax({
             url: action,
             type: method,
@@ -219,7 +218,7 @@
                 location.reload();
             },
         });
-    }   
+    }
     $('#exampleModal').on('hidden.bs.modal', function() {
         $('#date').val();
         $('#member_id').val();

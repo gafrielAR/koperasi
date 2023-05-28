@@ -10,10 +10,11 @@ class Installment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaction_number',
+        'prefix',
         'date',
         'loan_id',
         'ammount',
+        'installment_number',
     ];
 
     // protected $dates = 'date';
