@@ -32,7 +32,7 @@
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
@@ -299,10 +299,10 @@
   /**
    * Initiate Datatables
    */
-  const datatables = select('.datatable', true)
-  datatables.forEach(datatable => {
-    new simpleDatatables.DataTable(datatable);
-  })
+//   const datatables = select('.datatable', true)
+//   datatables.forEach(datatable => {
+//     new simpleDatatables.DataTable(datatable);
+//   })
 
   /**
    * Autoresize echart charts

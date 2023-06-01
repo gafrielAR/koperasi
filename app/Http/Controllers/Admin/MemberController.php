@@ -16,7 +16,7 @@ class MemberController extends Controller
     }
 
     public function list() {
-        $members = Member::orderByDesc('created_at')->paginate(9);
+        $members = Member::orderByDesc('created_at')->paginate(18);
 
         return view('admin.member', compact('members'));
     }

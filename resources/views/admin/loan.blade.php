@@ -1,11 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin ')
 
-@section('content')
-@if (session('success'))
-<div class="alert alert-success" role="alert">
-    {{ session('success') }}
-</div>
-@endif
+{{-- @section('content')
 <div class="p-5 overflow-scroll hide-scrollbar">
     <div class="row">
         <div class="col-sm-4">
@@ -65,8 +60,7 @@
                         </a>
                     </span>
                     <span class="btn badge text-bg-danger">
-                        <a class="text-decoration-none text-light" id="deleteButton" href="#"
-                            data-id="{{ $loan->id }}">
+                        <a class="text-decoration-none text-light" id="deleteButton" href="#" data-id="{{ $loan->id }}">
                             <i class="bi bi-trash3"></i>
                             Hapus
                         </a>
@@ -121,24 +115,21 @@
                 <div class="mb-3 row">
                     <label for="loan" class="col-sm-2 col-form-label text-end">Pinjaman :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="loan" name="loan"
-                            required>
+                        <input type="number" min="1" class="form-control" id="loan" name="loan" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="interest" class="col-sm-2 col-form-label text-end">Bunga :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="interest" name="interest"
-                            required>
+                        <input type="number" min="1" class="form-control" id="interest" name="interest" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="installment" class="col-sm-2 col-form-label text-end">Angsuran :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="installment" name="installment"
-                            required>
+                        <input type="number" min="1" class="form-control" id="installment" name="installment" required>
                     </div>
                 </div>
 
@@ -149,6 +140,151 @@
         </div>
     </div>
 </div>
+@endsection --}}
+
+@section('content')
+<div class="pagetitle">
+    <h1>Pinjaman</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item active">Pinjaman</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+
+    <div class="row">
+
+        <div class="col-lg-8">
+            <div class="col-12 d-flex align-content-between">
+                <div class="col pr-5">
+                    <div class="card info-card loan-card p-0">
+
+                        <div class="p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="ci-2 ci-dashboard-total-pinjaman"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h5>Total Pinjaman</h5>
+                                    <h6>Rp. 10.000.000</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col px-5">
+                    <div class="card info-card saving-card p-0">
+
+                        <div class="p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="ci-2 ci-dashboard-total-simpanan"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h5>Total Simpanan</h5>
+                                    <h6>Rp. 10.000.000</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col pl-5">
+
+                    <div class="card info-card installment-card p-0">
+
+                        <div class="p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="ci-2 ci-dashboard-total-angsuran"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h5>Total Angsuran</h5>
+                                    <h6>Rp. 10.000.000</h6>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Seluruh Pinjaman</h5>
+
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+
+                                    <table class="table datatable" id="loanHistoryTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">No.Transaksi</th>
+                                                <th scope="col">Anggota</th>
+                                                <th scope="col">Tanggal</th>
+                                                <th scope="col">Pinjaman</th>
+                                                <th scope="col">Bunga</th>
+                                                <th scope="col">Masa</th>
+                                                <th scope="col">Angsuran</th>
+                                                <th scope="col">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($loans as $loan)
+                                            <tr>
+                                                <th scope="row">{{ $loop->index+1 }}</td>
+                                                <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0', STR_PAD_LEFT) }}
+                                                </td>
+                                                <td>{{ $loan->member->name }}</td>
+                                                <td>{{ $loan->date }}</td>
+                                                <td>Rp. {{ number_format($loan->loan, 2) }}-</td>
+                                                <td>Rp. {{ number_format($loan->interest, 2) }}-</td>
+                                                <td>{{ $loan->term }} Bulan</td>
+                                                <td>Rp. {{ number_format($loan->installment, 2) }}-</td>
+                                                <td>
+                                                    <span class="btn badge text-bg-primary">
+                                                        <a class="text-decoration-none text-light" id="editButton"
+                                                            href="#" data-id="{{ $loan->id }}">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                            Edit
+                                                        </a>
+                                                    </span>
+                                                    <span class="btn badge text-bg-danger">
+                                                        <a class="text-decoration-none text-light" id="deleteButton"
+                                                            href="#" data-id="{{ $loan->id }}">
+                                                            <i class="bi bi-trash3"></i>
+                                                            Hapus
+                                                        </a>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @include('layouts.partials.info')
+
+    </div>
+</section>
 @endsection
 
 @section('script')
@@ -231,7 +367,7 @@
                 location.reload();
             },
         });
-    }   
+    }
     $('#exampleModal').on('hidden.bs.modal', function() {
         $('#date').val();
         $('#member_id').val();
@@ -242,30 +378,9 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
-        $(".search").keyup(function () {
-            var searchTerm = $(".search").val();
-            var listItem = $('.results tbody').children('tr');
-            var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
-
-            $.extend($.expr[':'], {'containsi': function(elem, i, match, array){
-                return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
-            }});
-
-            $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
-                $(this).attr('visible','false');
-            });
-
-            $(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
-                $(this).attr('visible','true');
-            });
-
-            var jobCount = $('.results tbody tr[visible="true"]').length;
-            $('.counter').text(jobCount + ' item');
-
-            if(jobCount == '0') {$('.no-result').show();}
-            else {$('.no-result').hide();}
-        });
+    $('#loanHistoryTable').dataTable( {
+        paging: true,
+        autoWidth: true
     });
 </script>
 @endsection

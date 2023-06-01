@@ -27,6 +27,7 @@ Auth::routes();
 
 Route::name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/saving-chart', [AdminController::class, 'savingChart'])->name('saving.chart');
 
     Route::name('member.')->prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'list'])->name('list');

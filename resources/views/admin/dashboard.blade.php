@@ -193,24 +193,117 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="pinjaman" role="tabpanel" aria-labelledby="pinjaman-tab">
-                                    Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos
-                                    quia.
-                                    Accusantium distinctio
-                                    omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia
-                                    distinctio
-                                    similique.
-                                    Voluptate nihil
-                                    recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+
+                                            <table class="table datatable" id="loanHistoryTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">No.Transaksi</th>
+                                                        <th scope="col">Anggota</th>
+                                                        <th scope="col">Tanggal</th>
+                                                        <th scope="col">Pinjaman</th>
+                                                        <th scope="col">Bunga</th>
+                                                        <th scope="col">Masa</th>
+                                                        <th scope="col">Angsuran</th>
+                                                        <th scope="col">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($loans as $loan)
+                                                    <tr>
+                                                        <th scope="row">{{ $loop->index+1 }}</td>
+                                                        <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0',
+                                                            STR_PAD_LEFT) }}</td>
+                                                        <td>{{ $loan->member->name }}</td>
+                                                        <td>{{ $loan->date }}</td>
+                                                        <td>Rp. {{ number_format($loan->loan, 2) }}-</td>
+                                                        <td>Rp. {{ number_format($loan->interest, 2) }}-</td>
+                                                        <td>{{ $loan->term }} Bulan</td>
+                                                        <td>Rp. {{ number_format($loan->installment, 2) }}-</td>
+                                                        <td>
+                                                            <span class="btn badge text-bg-primary">
+                                                                <a class="text-decoration-none text-light"
+                                                                    id="editButton" href="#" data-id="{{ $loan->id }}">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                    Edit
+                                                                </a>
+                                                            </span>
+                                                            <span class="btn badge text-bg-danger">
+                                                                <a class="text-decoration-none text-light"
+                                                                    id="deleteButton" href="#"
+                                                                    data-id="{{ $loan->id }}">
+                                                                    <i class="bi bi-trash3"></i>
+                                                                    Hapus
+                                                                </a>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="angsuran" role="tabpanel" aria-labelledby="angsuran-tab">
-                                    Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi
-                                    debitis cumque.
-                                    Accusantium quibusdam
-                                    perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias
-                                    nostrum
-                                    veniam.
-                                    Qui amet ipsum
-                                    iure. Dignissimos fuga tempore dolor.
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+
+                                            <table class="table datatable" id="installmentHistoryTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">No.Transaksi</th>
+                                                        <th scope="col">Tanggal</th>
+                                                        <th scope="col">No.Pinjaman</th>
+                                                        <th scope="col">Anggota</th>
+                                                        <th scope="col">Ke</th>
+                                                        <th scope="col">Nominal</th>
+                                                        <th scope="col">Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($installments as $installment)
+                                                    <tr>
+                                                        <th scope="row">{{ $loop->index+1 }}</td>
+                                                        <td>{{ $installment->prefix }}{{ str_pad($installment->id, 6,
+                                                            '0', STR_PAD_LEFT) }}</td>
+                                                        <td>{{ $installment->date }}</td>
+                                                        <td>{{ $installment->loan->prefix }}{{
+                                                            str_pad($installment->loan->id, 6, '0', STR_PAD_LEFT) }}
+                                                        </td>
+                                                        <td>{{ $installment->loan->member->nip }} - {{
+                                                            $installment->loan->member->name }}</td>
+                                                        <td>{{ $installment->installment_number }}</td>
+                                                        <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
+                                                        <td>
+                                                            <span class="btn badge text-bg-primary">
+                                                                <a class="text-decoration-none text-light"
+                                                                    id="editButton" href="#"
+                                                                    data-id="{{ $installment->id }}">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                    Edit
+                                                                </a>
+                                                            </span>
+                                                            <span class="btn badge text-bg-danger">
+                                                                <a class="text-decoration-none text-light"
+                                                                    id="deleteButton" href="#"
+                                                                    data-id="{{ $installment->id }}">
+                                                                    <i class="bi bi-trash3"></i>
+                                                                    Hapus
+                                                                </a>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -230,10 +323,18 @@
 @section('script')
 <script>
     $('#savingHistoryTable').dataTable( {
-        "paging": true,
-        "columnDefs": [{
-            "width": "100%"
-        }]
-    } );
+        paging: true,
+        autoWidth: true
+    });
+
+    $('#loanHistoryTable').dataTable( {
+        paging: true,
+        autoWidth: true
+    });
+
+    $('#installmentHistoryTable').dataTable( {
+        paging: true,
+        autoWidth: true
+    });
 </script>
 @endsection

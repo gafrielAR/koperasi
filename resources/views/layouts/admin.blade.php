@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -28,6 +29,8 @@
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/datatable/datatables.min.css') }}" rel="stylesheet">
 
+    <script src="{{ asset('assets/Jquery/jquery-3.6.4.min.js') }}"></script>
+
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
@@ -43,6 +46,27 @@
         .nav-tabs .nav-link.active {
             color: #ffffff;
             background-color: #10496c;
+        }
+
+        .datatable {
+            font-size: 14px;
+        }
+
+        /* #loanHistoryTable {
+            font-size: 14px;
+        } */
+
+        .transactionHistory h6 {
+            font-size: 14px !important;
+        }
+
+        .transactionHistory p {
+            font-size: 10px !important;
+        }
+
+        .transactionHistory h4 {
+            font-size: 20px !important;
+            font-weight: 800;
         }
     </style>
 </head>

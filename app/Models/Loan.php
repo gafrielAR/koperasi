@@ -26,6 +26,6 @@ class Loan extends Model
     }
 
     public function installments() {
-        return $this->hasMany(Installment::class, 'number_of_loan', 'id');
+        return $this->hasMany(Installment::class, 'loan_id', 'id');
     }
 }
