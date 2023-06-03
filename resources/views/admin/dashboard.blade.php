@@ -23,7 +23,8 @@
                         </div>
                         <div class="ps-3">
                             <h5>Uang Masuk</h5>
-                            <h6>Rp. 10.000.000</h6>
+                            <h6>Rp. {{ number_format($savings->sum(function ($row) { return $row->principal_saving +
+                                $row->mandatory_saving + $row->voluntary_saving; })) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -41,7 +42,7 @@
                         </div>
                         <div class="ps-3">
                             <h5>Uang Keluar</h5>
-                            <h6>Rp. 10.000.000</h6>
+                            <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
                         </div>
                         <div class="ps-3">
                             <h5>Total Pinjaman</h5>
-                            <h6>Rp. 10.000.000</h6>
+                            <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -77,7 +78,7 @@
                         </div>
                         <div class="ps-3">
                             <h5>Total Simpanan</h5>
-                            <h6>Rp. 10.000.000</h6>
+                            <h6>Rp. {{ number_format($savings->sum('principal_saving')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -96,7 +97,7 @@
                         </div>
                         <div class="ps-3">
                             <h5>Total Angsuran</h5>
-                            <h6>Rp. 10.000.000</h6>
+                            <h6>Rp. {{ number_format($installments->sum('ammount')) }}</h6>
                         </div>
                     </div>
 
