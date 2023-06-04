@@ -76,3 +76,9 @@
 .ci-simpanan-simpanan-wajib {
     background-image: url('svg/simpanan-simpanan-wajib.svg');
 }
+.ci-simpanan-pokok {
+    background-image: url('svg/simpanan-pokok.svg');
+}
+.ci-simpanan-wajib {
+    background-image: url('svg/simpanan-wajib.svg');
+}

@@ -18,7 +18,7 @@ class LoanController extends Controller
 
     public function list()
     {
-        $loans = Loan::paginate(9);
+        $loans = Loan::orderBy('id', 'desc')->get();
         $members = Member::all();
 
         return view('admin.loan', compact(['loans', 'members']));

@@ -1,155 +1,5 @@
 @extends('layouts.admin')
 
-{{-- @section('content')
-<div class="p-5 overflow-scroll hide-scrollbar">
-    <div class="row">
-        <div class="col-sm-4">
-            <h1>Installment</h1>
-        </div>
-
-        <div class="col-sm-4 offset-sm-4">
-            <div class="row d-flex justify-content-center">
-                <div class="col-sm-4">
-                    <button type="button" class="btn btn-primary" id="addButton">
-                        Add
-                    </button>
-                </div>
-                <div class="col-sm-8">
-                    <div class="form-group pull-right">
-                        <input type="text" class="search form-control" placeholder="What you looking for?">
-                    </div>
-                    <span class="counter pull-right"></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <table class="table table-hover table-bordered results">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">No.Transaksi</th>
-                <th scope="col">Tanggal</th>
-                <th scope="col">No.Pinjaman</th>
-                <th scope="col">Anggota</th>
-                <th scope="col">Ke</th>
-                <th scope="col">Nominal</th>
-                <th scope="col">Aksi</th>
-            </tr>
-            <tr class="warning no-result">
-                <td colspan="4"><i class="fa fa-warning"></i> No result</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($installments as $installment)
-            <tr>
-                <th scope="row">{{ $loop->index+1 }}</td>
-                <td>{{ $installment->prefix }}{{ str_pad($installment->id, 6, '0', STR_PAD_LEFT) }}</td>
-                <td>{{ $installment->date }}</td>
-                <td>{{ $installment->loan->prefix }}{{ str_pad($installment->loan->id, 6, '0', STR_PAD_LEFT) }}</td>
-                <td>{{ $installment->loan->member->nip }} - {{ $installment->loan->member->name }}</td>
-                <td>{{ $installment->installment_number }}</td>
-                <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
-                <td>
-                    <span class="btn badge text-bg-primary">
-                        <a class="text-decoration-none text-light" id="editButton" href="#"
-                            data-id="{{ $installment->id }}">
-                            <i class="bi bi-pencil-square"></i>
-                            Edit
-                        </a>
-                    </span>
-                    <span class="btn badge text-bg-danger">
-                        <a class="text-decoration-none text-light" id="deleteButton" href="#"
-                            data-id="{{ $installment->id }}">
-                            <i class="bi bi-trash3"></i>
-                            Hapus
-                        </a>
-                    </span>
-                </td>
-            </tr>
-
-            @endforeach
-        </tbody>
-    </table>
-
-    {{ $installments->links("pagination::bootstrap-5") }}
-</div>
-
-<!-- Modal Create -->
-<div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Form</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3 row">
-                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <input type="date" class="form-control" id="date" name="date" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <select name="member_id" id="member_id" class="form-control" required>
-                            <option value="" selected disabled>Loan Number</option>
-                            @foreach ($loans as $loan)
-                            <option value="{{ $loan->id }}">{{ $loan->loan_number }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <select name="member_id" id="member_id" class="form-control" required>
-                            <option value="" selected disabled>choose member</option>
-                            @foreach ($members as $member)
-                            <option value="{{ $member->id }}">{{ $member->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="loan_id" class="col-sm-2 col-form-label text-end">No.Pinjaman <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <select name="loan_id" id="loan_id" class="form-control" disabled required></select>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="installment_number" class="col-sm-2 col-form-label text-end">Ke :</label>
-                    <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="installment_number"
-                            name="installment_number" required>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="ammount" class="col-sm-2 col-form-label text-end">ammount :</label>
-                    <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="ammount" name="ammount" required>
-                    </div>
-                </div>
-
-                <div style="display: block; text-align: -webkit-center;">
-                    <button class="btn btn-primary mb-3" id="save"> Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection --}}
-
 @section('content')
 <div class="pagetitle">
     <h1>Angsuran</h1>
@@ -229,6 +79,9 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Seluruh Pinjaman</h5>
+                            <button type="button" class="btn btn-primary" id="addButton">
+                                Add
+                            </button>
 
                             <div class="col-lg-12">
                                 <div class="table-responsive">
@@ -295,6 +148,67 @@
 
     </div>
 </section>
+
+<!-- Modal Create -->
+<div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 row">
+                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
+                            class="text-danger fw-bold">*</span>:</label>
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
+                            class="text-danger fw-bold">*</span>:</label>
+                    <div class="col-sm-10">
+                        <select name="member_id" id="member_id" class="form-control" required>
+                            <option value="" selected disabled>Pilih Anggota</option>
+                            @foreach ($members as $member)
+                            <option value="{{ $member->id }}">{{ $member->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="loan_id" class="col-sm-2 col-form-label text-end">No.Pinjaman <span
+                            class="text-danger fw-bold">*</span>:</label>
+                    <div class="col-sm-10">
+                        <select name="loan_id" id="loan_id" class="form-control" disabled required></select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="installment_number" class="col-sm-2 col-form-label text-end">Ke :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="1" class="form-control" id="installment_number"
+                            name="installment_number" required>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="ammount" class="col-sm-2 col-form-label text-end">ammount :</label>
+                    <div class="col-sm-10">
+                        <input type="number" min="1" class="form-control" id="ammount" name="ammount" required>
+                    </div>
+                </div>
+
+                <div style="display: block; text-align: -webkit-center;">
+                    <button class="btn btn-primary mb-3" id="save"> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
@@ -376,7 +290,7 @@
                 location.reload();
             },
         });
-    }
+    }   
     $('#exampleModal').on('hidden.bs.modal', function() {
         $('#date').val();
         $('#member_id').val();
@@ -420,6 +334,12 @@
                 }
             });
         });
+    });
+</script>
+<script>
+    $('#installmentHistoryTable').dataTable( {
+        paging: true,
+        autoWidth: true
     });
 </script>
 @endsection

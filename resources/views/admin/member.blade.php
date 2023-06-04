@@ -39,9 +39,9 @@
 
                     <img src="{{ asset('assets/img/profile.webp') }}" alt="Profile" class="rounded-circle"
                         style="width: 85px">
-                    <h2 class="pt-2 m-0" style="font-size: 12px; font-weight: 900;">{{ $member->name }}</h2>
-                    <h3 style="font-size: 10px;" class="m-0">{{ $member->nip }}</h3>
-                    <h3 style="font-size: 10px;" class="m-0">
+                    <h2 class="text-center pt-2 m-0" style="font-size: 16px; font-weight: 900;">{{ $member->name }}</h2>
+                    <h3 style="font-size: 12px;" class="m-0">{{ $member->nip }}</h3>
+                    <h3 style="font-size: 12px;" class="m-0">
                         <i class='bx bx-{{ $member->gender === "male" ? "male" : "female" }}-sign'></i>
                         {{ $member->gender }}
                     </h3>

@@ -18,19 +18,20 @@ class InstallmentController extends Controller
 
     public function list()
     {
-        $installments = Installment::paginate(9);
+        $installments = Installment::orderBy('id', 'desc')->get();
         $members = Member::all();
         $loans = Loan::all();
 
         return view('admin.installment', compact(['installments', 'members', 'loans']));
     }
 
-    public function api_loan(Request $request) {
+    public function api_loan(Request $request)
+    {
         $data['loans'] = Loan::where('member_id', $request->member_id)->get();
 
         return response()->json($data);
     }
-    
+
     public function create(Request $request)
     {
         Validator::make($request->all(), [

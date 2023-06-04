@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Saving;
 use App\Models\Loan;
@@ -12,11 +11,13 @@ use App\Models\Installment;
 
 class AdminController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function dashboard() {
+    public function dashboard()
+    {
         $savings        = Saving::with('member')->get();
         $loans          = Loan::with(['member', 'installments'])->get();
         $installments   = Installment::with('loan')->get();
@@ -24,7 +25,8 @@ class AdminController extends Controller
         return view('admin.dashboard', compact(['savings', 'loans', 'installments']));
     }
 
-    public function savingChart() {
+    public function savingChart()
+    {
         $year = 2022;
 
         $results = DB::select("

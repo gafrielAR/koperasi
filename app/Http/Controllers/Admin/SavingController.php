@@ -12,18 +12,21 @@ use App\Models\Saving;
 
 class SavingController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function list() {
-        $savings = Saving::with('member')->paginate(9);
+    public function list()
+    {
+        $savings = Saving::with('member')->orderBy('id', 'desc')->get();
         $members = Member::all();
 
         return view('admin.saving', compact(['savings', 'members']));
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         Validator::make($request->all(), [
             'date'                  => 'required|date',
             'member_id'             => 'required|exists:members,id',
@@ -44,13 +47,15 @@ class SavingController extends Controller
         return response()->json(['success' => "Data Saved Successfully"]);
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $data = Saving::findOrFail($id);
 
         return response()->json(['result' => $data]);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         Validator::make($request->all(), [
             'transaction_number' => 'required',
             'date' => 'required|date',
@@ -73,7 +78,8 @@ class SavingController extends Controller
         return response()->json(['success' => "Data Updated Successfully"]);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         Saving::findOrFail($id)->delete();
 
         return redirect()->route('admin.saving.list')->with('success', "Data Deleted Successfully");
