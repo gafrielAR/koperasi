@@ -31,6 +31,7 @@ Route::name('admin.')->prefix('admin')->group(function () {
 
     Route::name('member.')->prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'list'])->name('list');
+        Route::get('/{id}', [MemberController::class, 'show'])->name('show');
         Route::get('/{id}/edit', [MemberController::class, 'edit'])->name('edit');
         Route::post('/create', [MemberController::class, 'create'])->name('create');
         Route::post('/update/{id}', [MemberController::class, 'update'])->name('update');

@@ -2,11 +2,12 @@
 
 @section('content')
 <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>{{ $member->name }}</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.member.list') }}">Member</a></li>
+            <li class="breadcrumb-item active">{{ $member->name }}</li>
         </ol>
     </nav>
 </div>
@@ -22,9 +23,13 @@
                             <i class="ci-2 ci-dashboard-uang-masuk"></i>
                         </div>
                         <div class="ps-3">
-                            <h5>Uang Masuk</h5>
-                            <h6>Rp. {{ number_format($savings->sum(function ($row) { return $row->principal_saving +
-                                $row->mandatory_saving + $row->voluntary_saving; })) }}</h6>
+                            <h5>Total Pinjaman</h5>
+                            <h6>
+                                Rp.
+                                {{
+                                number_format($member->loans->sum('loan'))
+                                }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -41,8 +46,18 @@
                             <i class="ci-2 ci-dashboard-uang-keluar"></i>
                         </div>
                         <div class="ps-3">
-                            <h5>Uang Keluar</h5>
-                            <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
+                            <h5>Angsuran Pinjaman</h5>
+                            @php
+                            $totalInstallmentsAmount = 0;
+                            @endphp
+                            @foreach ($member->loans as $loan)
+                            @php
+                            $totalInstallmentsAmount += $loan->installments->sum('ammount');
+                            @endphp
+                            @endforeach
+                            <h6>
+                                Rp. {{ number_format($totalInstallmentsAmount) }}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -59,8 +74,8 @@
                             <i class="ci-2 ci-dashboard-total-pinjaman"></i>
                         </div>
                         <div class="ps-3">
-                            <h5>Total Pinjaman</h5>
-                            <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
+                            <h5>Simpanan Wajib</h5>
+                            <h6>Rp. {{ number_format($member->savings->sum('principal_saving')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -74,11 +89,11 @@
                 <div class="p-3">
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-total-simpanan"></i>
+                            <i class="ci-2 ci-dashboard-total-pinjaman"></i>
                         </div>
                         <div class="ps-3">
-                            <h5>Total Simpanan</h5>
-                            <h6>Rp. {{ number_format($savings->sum('principal_saving')) }}</h6>
+                            <h5>Simpanan Pokok</h5>
+                            <h6>Rp. {{ number_format($member->savings->sum('mandatory_saving')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -93,11 +108,11 @@
                 <div class="p-3">
                     <div class="d-flex align-items-center">
                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-total-angsuran"></i>
+                            <i class="ci-2 ci-dashboard-total-pinjaman"></i>
                         </div>
                         <div class="ps-3">
-                            <h5>Total Angsuran</h5>
-                            <h6>Rp. {{ number_format($installments->sum('ammount')) }}</h6>
+                            <h5>Simpanan Sukarela</h5>
+                            <h6>Rp. {{ number_format($member->savings->sum('voluntary_saving')) }}</h6>
                         </div>
                     </div>
 
@@ -146,7 +161,6 @@
                                                         <th scope="col">#</th>
                                                         <th scope="col">No.Transaksi</th>
                                                         <th scope="col">Tanggal</th>
-                                                        <th scope="col">Anggota</th>
                                                         <th scope="col">S.Pokok</th>
                                                         <th scope="col">S.Wajib</th>
                                                         <th scope="col">S.Sukarela</th>
@@ -154,16 +168,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($savings as $saving)
+                                                    @foreach ($member->savings as $saving)
                                                     <tr>
                                                         <th scope="row">{{ $loop->index+1 }}</td>
-                                                        <td>{{ $saving->prefix }}{{ str_pad($saving->id, 6, '0',
-                                                            STR_PAD_LEFT)
-                                                            }}</td>
-                                                        <td>{{ $saving->date }}</td>
                                                         <td>
-                                                            {{ $saving->member->nip }} - {{ $saving->member->name }}
+                                                            {{ $saving->prefix }}
+                                                            {{ str_pad($saving->id, 6, '0', STR_PAD_LEFT) }}
                                                         </td>
+                                                        <td>{{ $saving->date }}</td>
                                                         <td>{{ number_format($saving->principal_saving, 2) }}</td>
                                                         <td>{{ number_format($saving->mandatory_saving, 2) }}</td>
                                                         <td>{{ number_format($saving->voluntary_saving, 2) }}</td>
@@ -202,7 +214,6 @@
                                                     <tr>
                                                         <th scope="col">#</th>
                                                         <th scope="col">No.Transaksi</th>
-                                                        <th scope="col">Anggota</th>
                                                         <th scope="col">Tanggal</th>
                                                         <th scope="col">Pinjaman</th>
                                                         <th scope="col">Bunga</th>
@@ -212,12 +223,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($loans as $loan)
+                                                    @foreach ($member->loans as $loan)
                                                     <tr>
                                                         <th scope="row">{{ $loop->index+1 }}</td>
                                                         <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0',
                                                             STR_PAD_LEFT) }}</td>
-                                                        <td>{{ $loan->member->name }}</td>
                                                         <td>{{ $loan->date }}</td>
                                                         <td>Rp. {{ number_format($loan->loan, 2) }}-</td>
                                                         <td>Rp. {{ number_format($loan->interest, 2) }}-</td>
@@ -259,24 +269,25 @@
                                                         <th scope="col">No.Transaksi</th>
                                                         <th scope="col">Tanggal</th>
                                                         <th scope="col">No.Pinjaman</th>
-                                                        <th scope="col">Anggota</th>
                                                         <th scope="col">Ke</th>
                                                         <th scope="col">Nominal</th>
                                                         <th scope="col">Aksi</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($installments as $installment)
+                                                    @foreach ($member->loans as $loan)
+                                                    @foreach ($loan->installments as $installment)
                                                     <tr>
                                                         <th scope="row">{{ $loop->index+1 }}</td>
-                                                        <td>{{ $installment->prefix }}{{ str_pad($installment->id, 6,
-                                                            '0', STR_PAD_LEFT) }}</td>
-                                                        <td>{{ $installment->date }}</td>
-                                                        <td>{{ $installment->loan->prefix }}{{
-                                                            str_pad($installment->loan->id, 6, '0', STR_PAD_LEFT) }}
+                                                        <td>
+                                                            {{ $installment->prefix }}
+                                                            {{ str_pad($installment->id, 6, '0', STR_PAD_LEFT) }}
                                                         </td>
-                                                        <td>{{ $installment->loan->member->nip }} - {{
-                                                            $installment->loan->member->name }}</td>
+                                                        <td>{{ $installment->date }}</td>
+                                                        <td>
+                                                            {{ $installment->loan->prefix }}
+                                                            {{ str_pad($installment->loan->id, 6, '0', STR_PAD_LEFT) }}
+                                                        </td>
                                                         <td>{{ $installment->installment_number }}</td>
                                                         <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
                                                         <td>
@@ -298,7 +309,7 @@
                                                             </span>
                                                         </td>
                                                     </tr>
-
+                                                    @endforeach
                                                     @endforeach
                                                 </tbody>
                                             </table>
@@ -315,7 +326,72 @@
             </div>
         </div>
 
-        @include('layouts.partials.info')
+        <div class="col-lg-4">
+
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Riwayat Transaksi</h5>
+
+                    <div class="col">
+                        <div class="info-card income-card transactionHistory p-0">
+
+                            <div class="p-0">
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="ci-2 ci-dashboard-uang-masuk"></i>
+                                    </div>
+                                    <div class="ps-3 flex-grow-1">
+                                        <h6>Ade Bayu Budiono</h6>
+                                        <p class="p-0 m-0">Simpanan Pokok</p>
+                                        <p class="text-disabled p-0 m-0">Sabtu, 08 April 2023</p>
+                                    </div>
+                                    <div>
+                                        <h4>Rp. 1.000.000</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-0">
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="ci-2 ci-dashboard-uang-masuk"></i>
+                                    </div>
+                                    <div class="ps-3 flex-grow-1">
+                                        <h6>Ade Bayu Budiono</h6>
+                                        <p class="p-0 m-0">Simpanan Pokok</p>
+                                        <p class="text-disabled p-0 m-0">Sabtu, 08 April 2023</p>
+                                    </div>
+                                    <div>
+                                        <h4>Rp. 1.000.000</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-0">
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="ci-2 ci-dashboard-uang-masuk"></i>
+                                    </div>
+                                    <div class="ps-3 flex-grow-1">
+                                        <h6>Ade Bayu Budiono</h6>
+                                        <p class="p-0 m-0">Simpanan Pokok</p>
+                                        <p class="text-disabled p-0 m-0">Sabtu, 08 April 2023</p>
+                                    </div>
+                                    <div>
+                                        <h4>Rp. 1.000.000</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 </section>
@@ -323,7 +399,17 @@
 
 @section('script')
 <script>
-    $('.datatable').dataTable( {
+    $('#savingHistoryTable').dataTable( {
+        paging: true,
+        autoWidth: true
+    });
+
+    $('#loanHistoryTable').dataTable( {
+        paging: true,
+        autoWidth: true
+    });
+
+    $('#installmentHistoryTable').dataTable( {
         paging: true,
         autoWidth: true
     });

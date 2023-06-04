@@ -8,20 +8,34 @@ use Illuminate\Support\Facades\Validator;
 
 // Models
 use App\Models\Member;
+use App\Models\Saving;
+use App\Models\Loan;
+use App\Models\Installment;
 
 class MemberController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth');
     }
 
-    public function list() {
+    public function list()
+    {
         $members = Member::orderByDesc('created_at')->paginate(18);
 
         return view('admin.member', compact('members'));
     }
 
-    public function create(Request $request) {
+    public function show($id)
+    {
+        $member = Member::findOrFail($id);
+
+        // dd($member);
+        return view('admin.member.show', compact('member'));
+    }
+
+    public function create(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'nip' => 'required|numeric',
@@ -38,13 +52,15 @@ class MemberController extends Controller
         return response()->json(['success' => "Data Saved Successfully"]);
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $data = Member::findOrFail($id);
 
         return response()->json(['result' => $data]);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'nip' => 'required|numeric',
@@ -61,7 +77,8 @@ class MemberController extends Controller
         return response()->json(['success' => "Data Updated Successfully"]);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         Member::findOrFail($id)->delete();
 
         return redirect()->route('admin.member.list')->with('success', "Data Deleted Successfully");

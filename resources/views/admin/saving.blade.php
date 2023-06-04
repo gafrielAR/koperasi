@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>Simpanan</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active">Simpanan</li>
         </ol>
     </nav>
 </div>
@@ -26,7 +26,7 @@
                                     <i class="ci-2 ci-dashboard-total-pinjaman"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Pinjaman</h5>
+                                    <h5>Simpanan Pokok</h5>
                                     <h6>Rp. 10.000.000</h6>
                                 </div>
                             </div>
@@ -41,10 +41,10 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-simpanan"></i>
+                                    <i class="ci-2 ci-dashboard-total-pinjaman"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Simpanan</h5>
+                                    <h5>Simpanan Wajib</h5>
                                     <h6>Rp. 10.000.000</h6>
                                 </div>
                             </div>
@@ -60,10 +60,10 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-angsuran"></i>
+                                    <i class="ci-2 ci-dashboard-total-pinjaman"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Angsuran</h5>
+                                    <h5>Simpanan Sukarela</h5>
                                     <h6>Rp. 10.000.000</h6>
                                 </div>
                             </div>
@@ -78,7 +78,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Seluruh Simpanan</h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">Seluruh Simpanan</h5>
+                                <button class="btn btn-primary">
+                                    Tambah Data Baru
+                                </button>
+                            </div>
 
                             <div class="col-lg-12">
                                 <div class="table-responsive">
