@@ -22,7 +22,35 @@ class AdminController extends Controller
         $loans          = Loan::with(['member', 'installments'])->get();
         $installments   = Installment::with('loan')->get();
 
-        return view('admin.dashboard', compact(['savings', 'loans', 'installments']));
+        $savingsByYear = Saving::select(
+            DB::raw('YEAR(date) AS year'),
+            DB::raw('SUM(principal_saving + mandatory_saving + voluntary_saving) AS total_savings')
+        )
+            ->groupBy('year')
+            ->get();
+
+        $interestByYear = Loan::select(DB::raw('YEAR(date) AS year'), DB::raw('SUM(interest) AS total_interest'))
+            ->groupBy('year')
+            ->get();
+
+        $shuData = [];
+
+        foreach ($savingsByYear as $savingsShu) {
+            $year = $savingsShu->year;
+            $totalSavings = $savingsShu->total_savings;
+            $totalInterest = $interestByYear->firstWhere('year', $year)->total_interest;
+            $shu = ($totalSavings / $totalInterest) * 0.05;
+
+            $shuData[] = [
+                'year' => $year,
+                'total_savings' => $totalSavings,
+                'total_interest' => $totalInterest,
+                'shu' => $shu,
+            ];
+        }
+        // dd($shuData);
+
+        return view('admin.dashboard', compact(['savings', 'loans', 'installments', 'shuData']));
     }
 
     public function savingChart()

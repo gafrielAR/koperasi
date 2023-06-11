@@ -123,15 +123,19 @@
                                         data-bs-target="#simpanan" type="button" role="tab" aria-controls="simpanan"
                                         aria-selected="true">Simpanan</button>
                                 </li>
-                                <li class="nav-item mx-4" role="presentation">
+                                <li class="nav-item mr-4" role="presentation">
                                     <button class="nav-link" id="pinjaman-tab" data-bs-toggle="tab"
                                         data-bs-target="#pinjaman" type="button" role="tab" aria-controls="pinjaman"
                                         aria-selected="false">Pinjaman</button>
                                 </li>
-                                <li class="nav-item ml-4" role="presentation">
+                                <li class="nav-item mr-4" role="presentation">
                                     <button class="nav-link" id="angsuran-tab" data-bs-toggle="tab"
                                         data-bs-target="#angsuran" type="button" role="tab" aria-controls="angsuran"
                                         aria-selected="false">Angsuran</button>
+                                </li>
+                                <li class="nav-item mr-4" role="presentation">
+                                    <button class="nav-link" id="shu-tab" data-bs-toggle="tab" data-bs-target="#shu"
+                                        type="button" role="tab" aria-controls="shu" aria-selected="false">Shu</button>
                                 </li>
                             </ul>
                             <div class="tab-content pt-2" id="historyContent">
@@ -299,6 +303,36 @@
                                                         </td>
                                                     </tr>
 
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="shu" role="tabpanel" aria-labelledby="shu-tab">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+
+                                            <table class="table datatable" id="shuTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Tahun Penerimaan SHU</th>
+                                                        <th scope="col">Total Simpanan</th>
+                                                        <th scope="col">Total Bunga</th>
+                                                        <th scope="col">SHU yang diperoleh</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($shuData as $shu)
+                                                    <tr>
+                                                        <th>{{ $loop->iteration }}</th>
+                                                        <th>{{ $shu['year'] }}</th>
+                                                        <th>Rp. {{ number_format($shu['total_savings']) }}</th>
+                                                        <th>Rp. {{ number_format($shu['total_interest']) }}</th>
+                                                        <th>Rp. {{ number_format($shu['shu']) }}</th>
+                                                    </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>

@@ -87,7 +87,6 @@
 
                             <div class="col-lg-12">
                                 <div class="table-responsive">
-
                                     <table class="table datatable" id="savingHistoryTable">
                                         <thead>
                                             <tr>
@@ -135,7 +134,6 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
