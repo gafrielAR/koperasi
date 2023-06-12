@@ -20,8 +20,9 @@ class LoanController extends Controller
     {
         $loans = Loan::orderBy('id', 'desc')->get();
         $members = Member::all();
+        $savings = Saving::all();
 
-        return view('admin.loan', compact(['loans', 'members']));
+        return view('admin.loan', compact(['loans', 'members', 'savings']));
     }
 
     public function read($id)

@@ -23,11 +23,11 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-pinjaman"></i>
+                                    <i class="ci-2 ci-angsuran-total-angsuran"></i>
                                 </div>
                                 <div class="ps-3">
                                     <h5>Total Pinjaman</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -41,11 +41,11 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-simpanan"></i>
+                                    <i class="ci-2 ci-angsuran-total-kembali"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Simpanan</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h5>Total Kembali</h5>
+                                    <h6>Rp. {{ number_format($loans->sum('installment')) }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -60,11 +60,11 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-angsuran"></i>
+                                    <i class="ci-2 ci-angsuran-jumlah-pengangsur"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Angsuran</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h5>Jumlah Peminjam</h5>
+                                    <h6>{{ count($loans) }} Orang</h6>
                                 </div>
                             </div>
 
@@ -142,7 +142,7 @@
             </div>
         </div>
 
-        @include('layouts.partials.info')
+        @include('layouts.partials.info', ['loans' => $loans])
 
     </div>
 </section>
@@ -259,6 +259,17 @@
                 $('#installment').val(response.result.installment),
                 $('#save').click(function() {
                     save(id);
+                });
+            },
+            error: function(xhr) {
+                // Handle error response
+                var errors = xhr.responseJSON.errors;
+                $.each(errors, function(field, messages) {
+                    var errorHtml = '';
+                    $.each(messages, function(index, message) {
+                        errorHtml += '<li>' + message + '</li>';
+                    });
+                    $('#' + field + '_error').html(errorHtml);
                 });
             }
         });

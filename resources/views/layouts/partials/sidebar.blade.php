@@ -3,12 +3,14 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link {{ (request()->is('admin')) ? '' : 'collapsed' }}" href="{{ route('admin.dashboard') }}">
+            <a class="nav-link {{ (request()->is('admin')) ? '' : 'collapsed' }}"
+                href="{{ Auth::user()->role == 'admin' ? route('admin.dashboard') : route('dashboard.index') }}">
                 <i class="ci-1 ci-dashboard-line"></i>
                 <span>Dashboard</span>
             </a>
         </li>
 
+        @if (Auth::user()->role == 'admin')
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
@@ -42,6 +44,7 @@
                 <span>Angsuran</span>
             </a>
         </li>
+        @endif
 
     </ul>
 

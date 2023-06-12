@@ -23,11 +23,13 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-pinjaman"></i>
+                                    <i class="ci-2 ci-angsuran-total-angsuran"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Pinjaman</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h5>Total Angsuran</h5>
+                                    <h6>Rp. {{ number_format($installments->sum(function ($installment) {
+                                        return $installment->loan->installment;
+                                        })) }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -41,11 +43,11 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-simpanan"></i>
+                                    <i class="ci-2 ci-angsuran-total-kembali"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Simpanan</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h5>Total Kembali</h5>
+                                    <h6>Rp. {{ number_format($installments->sum('ammount')) }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -60,11 +62,11 @@
                         <div class="p-3">
                             <div class="d-flex align-items-center">
                                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ci-2 ci-dashboard-total-angsuran"></i>
+                                    <i class="ci-2 ci-angsuran-jumlah-pengangsur"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h5>Total Angsuran</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h5>Jumlah Pengangsur</h5>
+                                    <h6>{{ $installments->groupBy('loan.member_id')->count() }} Orang</h6>
                                 </div>
                             </div>
 
@@ -144,7 +146,7 @@
             </div>
         </div>
 
-        @include('layouts.partials.info')
+        @include('layouts.partials.info', ['installments' => $installments])
 
     </div>
 </section>
@@ -167,23 +169,19 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
-                            class="text-danger fw-bold">*</span>:</label>
-                    <div class="col-sm-10">
-                        <select name="member_id" id="member_id" class="form-control" required>
-                            <option value="" selected disabled>Pilih Anggota</option>
-                            @foreach ($members as $member)
-                            <option value="{{ $member->id }}">{{ $member->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <label for="loan_id" class="col-sm-2 col-form-label text-end">No.Pinjaman <span
                             class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
-                        <select name="loan_id" id="loan_id" class="form-control" disabled required></select>
+                        <select name="loan_id" id="loan_id" class="form-control" required>
+                            <option value="" selected disabled>Loan Number</option>
+                            @foreach ($loans as $loan)
+                            <option value="{{ $loan->id }}">
+                                {{ $loan->prefix }}
+                                {{ str_pad($loan->id, 6, '0', STR_PAD_LEFT) }} -
+                                {{ $loan->member->name }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
@@ -239,8 +237,6 @@
                 $('#exampleModal').modal('show');
                 $('#date').val(response.result.date),
                 $('#date').attr('disabled', true),
-                $('#member_id').val(response.result.member_id),
-                $('#member_id').attr('disabled', true),
                 $('#loan_id').val(response.result.loan_id),
                 $('#loan_id').attr('disabled', true),
                 $('#installment_number').val(response.result.installment_number),
@@ -301,38 +297,9 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('#member_id').select2({
-            dropdownParent: "#exampleModal",
-            theme: 'bootstrap-5'
-        });
-
         $('#loan_id').select2({
             dropdownParent: "#exampleModal",
             theme: 'bootstrap-5'
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('#member_id').on('change', function () {
-            var id_member = this.value;
-            $('#loan_id').html('');
-            $('#loan_id').removeAttr('disabled');
-            $.ajax({
-                url: "{{ route('admin.installment.api_loan') }}",
-                type: "POST",
-                data: {
-                    member_id: id_member,
-                    _token: '{{ csrf_token() }}'
-                },
-                dataType: 'json',
-                success: function (result) {
-                    $('#loan_id').html('<option value="">-- Pilih Pinjaman --</option>');
-                    $.each(result.loans, function (key, value) {
-                        $("#loan_id").append('<option value="' + value.id + '">' + value.prefix + ("0000000" + value.id).slice(-6) + '</option>');
-                    });
-                }
-            });
         });
     });
 </script>

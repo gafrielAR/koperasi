@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('prefix');
             $table->date('date');
-            $table->unsignedBigInteger('loan_id')->nullable();
+            $table->unsignedBigInteger('loan_id');
             $table->string('installment_number');
             $table->bigInteger('ammount');
             $table->timestamps();

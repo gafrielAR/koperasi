@@ -407,53 +407,60 @@
             <div class="col">
                 <div class="info-card income-card transactionHistory p-0">
 
+                    @if (request()->routeIs('admin.saving.*'))
+                    @foreach ($savings->take(5) as $saving)
                     <div class="p-0">
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="ci-2 ci-dashboard-uang-masuk"></i>
                             </div>
                             <div class="ps-3 flex-grow-1">
-                                <h6>Ade Bayu Budiono</h6>
-                                <p class="p-0 m-0">Simpanan Pokok</p>
-                                <p class="text-disabled p-0 m-0">Sabtu, 08 April 2023</p>
+                                <h6>{{ $saving->member->name }}</h6>
+                                <p class="text-disabled p-0 m-0">{{ $saving->date }}</p>
                             </div>
                             <div>
-                                <h4>Rp. 1.000.000</h4>
+                                <h4>Rp. {{ number_format($saving->principal_saving) }}</h4>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                    @elseif (request()->routeIs('admin.loan.*'))
+                    @foreach ($loans->take(5) as $loan)
+                    <div class="p-0">
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-uang-masuk"></i>
+                            </div>
+                            <div class="ps-3 flex-grow-1">
+                                <h6>{{ $loan->member->name }}</h6>
+                                <p class="text-disabled p-0 m-0">{{ $loan->date }}</p>
+                            </div>
+                            <div>
+                                <h4>Rp. {{ number_format($loan->loan) }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @else
+                    @foreach ($installments->take(5) as $installment)
+                    <div class="p-0">
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-uang-masuk"></i>
+                            </div>
+                            <div class="ps-3 flex-grow-1">
+                                <h6>{{ $installment->loan->member->name }}</h6>
+                                <p class="text-disabled p-0 m-0">{{ $installment->date }}</p>
+                            </div>
+                            <div>
+                                <h4>Rp. {{ number_format($installment->ammount) }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @endif
 
-                    <div class="p-0">
-                        <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="ci-2 ci-dashboard-uang-masuk"></i>
-                            </div>
-                            <div class="ps-3 flex-grow-1">
-                                <h6>Ade Bayu Budiono</h6>
-                                <p class="p-0 m-0">Simpanan Pokok</p>
-                                <p class="text-disabled p-0 m-0">Sabtu, 08 April 2023</p>
-                            </div>
-                            <div>
-                                <h4>Rp. 1.000.000</h4>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="p-0">
-                        <div class="d-flex align-items-center">
-                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="ci-2 ci-dashboard-uang-masuk"></i>
-                            </div>
-                            <div class="ps-3 flex-grow-1">
-                                <h6>Ade Bayu Budiono</h6>
-                                <p class="p-0 m-0">Simpanan Pokok</p>
-                                <p class="text-disabled p-0 m-0">Sabtu, 08 April 2023</p>
-                            </div>
-                            <div>
-                                <h4>Rp. 1.000.000</h4>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>

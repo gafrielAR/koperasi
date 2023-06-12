@@ -2,12 +2,11 @@
 
 @section('content')
 <div class="pagetitle">
-    <h1>{{ $member->name }}</h1>
+    <h1>{{ Auth::user()->name }}</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.member.list') }}">Member</a></li>
-            <li class="breadcrumb-item active">{{ $member->name }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Home</a></li>
+            <li class="breadcrumb-item active">{{ Auth::user()->name }}</li>
         </ol>
     </nav>
 </div>
@@ -27,7 +26,8 @@
                             <h6>
                                 Rp.
                                 {{
-                                number_format($member->loans->sum('loan'))
+                                Auth::user()->loans == null ? '0' :
+                                number_format(Auth::user()->loans->sum('loan'))
                                 }}
                             </h6>
                         </div>
@@ -50,11 +50,13 @@
                             @php
                             $totalInstallmentsAmount = 0;
                             @endphp
-                            @foreach ($member->loans as $loan)
+                            @if (Auth::user()->loans != null)
+                            @foreach (Auth::user()->loans as $loan)
                             @php
                             $totalInstallmentsAmount += $loan->installments->sum('ammount');
                             @endphp
                             @endforeach
+                            @endif
                             <h6>
                                 Rp. {{ number_format($totalInstallmentsAmount) }}
                             </h6>
@@ -75,7 +77,8 @@
                         </div>
                         <div class="ps-3">
                             <h5>Simpanan Wajib</h5>
-                            <h6>Rp. {{ number_format($member->savings->sum('principal_saving')) }}</h6>
+                            <h6>Rp. {{ Auth::user()->savings == null ? '0' :
+                                number_format(Auth::user()->savings->sum('principal_saving')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -93,7 +96,8 @@
                         </div>
                         <div class="ps-3">
                             <h5>Simpanan Pokok</h5>
-                            <h6>Rp. {{ number_format($member->savings->sum('mandatory_saving')) }}</h6>
+                            <h6>Rp. {{ Auth::user()->savings == null ? '0' :
+                                number_format(Auth::user()->savings->sum('mandatory_saving')) }}</h6>
                         </div>
                     </div>
                 </div>
@@ -112,7 +116,8 @@
                         </div>
                         <div class="ps-3">
                             <h5>Simpanan Sukarela</h5>
-                            <h6>Rp. {{ number_format($member->savings->sum('voluntary_saving')) }}</h6>
+                            <h6>Rp. {{ Auth::user()->savings == null ? '0' :
+                                number_format(Auth::user()->savings->sum('voluntary_saving')) }}</h6>
                         </div>
                     </div>
 
@@ -171,7 +176,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($member->savings as $saving)
+                                                    @if (Auth::user()->savings != null)
+
+                                                    @foreach (Auth::user()->savings as $saving)
                                                     <tr>
                                                         <th scope="row">{{ $loop->index+1 }}</td>
                                                         <td>
@@ -184,6 +191,7 @@
                                                         <td>{{ number_format($saving->voluntary_saving, 2) }}</td>
                                                     </tr>
                                                     @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
 
@@ -207,7 +215,8 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($member->loans as $loan)
+                                                    @if (Auth::user()->loans != null)
+                                                    @foreach (Auth::user()->loans as $loan)
                                                     <tr>
                                                         <th scope="row">{{ $loop->index+1 }}</td>
                                                         <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0',
@@ -219,6 +228,7 @@
                                                         <td>Rp. {{ number_format($loan->installment, 2) }}-</td>
                                                     </tr>
                                                     @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
 
@@ -241,7 +251,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($member->loans as $loan)
+                                                    @if (Auth::user()->loans != null)
+
+                                                    @foreach (Auth::user()->loans as $loan)
                                                     @foreach ($loan->installments as $installment)
                                                     <tr>
                                                         <th scope="row">{{ $loop->index+1 }}</td>
@@ -259,6 +271,7 @@
                                                     </tr>
                                                     @endforeach
                                                     @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
 
@@ -313,7 +326,8 @@
                     <div class="col">
                         <div class="info-card income-card transactionHistory p-0">
 
-                            @foreach ($savings->take(9) as $saving)
+                            @if (Auth::user()->savings != null)
+                            @foreach (Auth::user()->savings->take(9) as $saving)
                             <div class="p-0">
                                 <div class="d-flex align-items-center">
                                     <div
@@ -330,6 +344,7 @@
                                 </div>
                             </div>
                             @endforeach
+                            @endif
 
                         </div>
                     </div>

@@ -29,7 +29,12 @@ class MemberController extends Controller
 
     public function show($id)
     {
-        $member = Member::findOrFail($id);
+        $member = optional(Member::findOrFail($id));
+        $members = Member::all();
+        $loans = Loan::all();
+        $installments = Installment::all();
+        $savings = Saving::all();
+
         $savingsByYear = Saving::select(
             DB::raw('YEAR(date) AS year'),
             DB::raw('SUM(principal_saving + mandatory_saving + voluntary_saving) AS total_savings')
@@ -45,11 +50,11 @@ class MemberController extends Controller
 
         $shuData = [];
 
-        foreach ($savingsByYear as $savings) {
-            $year = $savings->year;
-            $totalSavings = $savings->total_savings;
+        foreach ($savingsByYear as $savingsShu) {
+            $year = $savingsShu->year;
+            $totalSavings = $savingsShu->total_savings;
             $totalInterest = $interestByYear->firstWhere('year', $year)->total_interest;
-            $shu = ($totalSavings / $totalInterest) * 0.05;
+            $shu = ($totalSavings + $totalInterest) * 0.05;
 
             $shuData[] = [
                 'year' => $year,
@@ -59,7 +64,7 @@ class MemberController extends Controller
             ];
         }
 
-        return view('admin.member.show', compact(['member', 'shuData']));
+        return view('admin.member.show', compact(['loans', 'installments', 'savings', 'members', 'member', 'shuData']));
     }
 
     public function create(Request $request)

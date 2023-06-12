@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Saving;
+use App\Models\Member;
 use App\Models\Loan;
 use App\Models\Installment;
 
@@ -18,15 +19,18 @@ class AdminController extends Controller
 
     public function dashboard()
     {
+        // $members        = Member::all();
         $savings        = Saving::with('member')->get();
         $loans          = Loan::with(['member', 'installments'])->get();
         $installments   = Installment::with('loan')->get();
+        $members        = Member::with(['loans', 'savings'])->get();
 
-        $savingsByYear = Saving::select(
+        $savingsByYearAndMember = Saving::select(
             DB::raw('YEAR(date) AS year'),
+            'member_id',
             DB::raw('SUM(principal_saving + mandatory_saving + voluntary_saving) AS total_savings')
         )
-            ->groupBy('year')
+            ->groupBy('year', 'member_id')
             ->get();
 
         $interestByYear = Loan::select(DB::raw('YEAR(date) AS year'), DB::raw('SUM(interest) AS total_interest'))
@@ -35,22 +39,24 @@ class AdminController extends Controller
 
         $shuData = [];
 
-        foreach ($savingsByYear as $savingsShu) {
+        foreach ($savingsByYearAndMember as $savingsShu) {
             $year = $savingsShu->year;
+            $member = Member::findOrFail($savingsShu->member_id);
             $totalSavings = $savingsShu->total_savings;
             $totalInterest = $interestByYear->firstWhere('year', $year)->total_interest;
-            $shu = ($totalSavings / $totalInterest) * 0.05;
+            $multiply = $totalSavings + $totalInterest;
+            $shu = $multiply * 0.05;
 
             $shuData[] = [
                 'year' => $year,
+                'member' => $member->name,
                 'total_savings' => $totalSavings,
                 'total_interest' => $totalInterest,
                 'shu' => $shu,
             ];
         }
-        // dd($shuData);
 
-        return view('admin.dashboard', compact(['savings', 'loans', 'installments', 'shuData']));
+        return view('admin.dashboard', compact(['members', 'savings', 'loans', 'installments', 'shuData']));
     }
 
     public function savingChart()

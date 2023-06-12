@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\SavingController;
@@ -25,7 +27,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::name('admin.')->prefix('admin')->group(function () {
+Route::name('dashboard.')->prefix('dashboard')->middleware('role:member')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('index');
+});
+Route::name('admin.')->prefix('admin')->middleware('role:admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/saving-chart', [AdminController::class, 'savingChart'])->name('saving.chart');
 

@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="ps-3">
                                     <h5>Simpanan Pokok</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h6>Rp. {{ number_format($savings->sum('principal_saving')) }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="ps-3">
                                     <h5>Simpanan Wajib</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h6>Rp. {{ number_format($savings->sum('mandatory_saving')) }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="ps-3">
                                     <h5>Simpanan Sukarela</h5>
-                                    <h6>Rp. 10.000.000</h6>
+                                    <h6>Rp. {{ number_format($savings->sum('voluntary_saving')) }}</h6>
                                 </div>
                             </div>
 
@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        @include('layouts.partials.info')
+        @include('layouts.partials.info', ['savings' => $savings])
 
     </div>
 </section>

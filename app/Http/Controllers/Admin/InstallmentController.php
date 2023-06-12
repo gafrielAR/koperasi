@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Installment;
 use App\Models\Loan;
-use App\Models\Member;
+use App\Models\Saving;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,11 +18,11 @@ class InstallmentController extends Controller
 
     public function list()
     {
-        $installments = Installment::orderBy('id', 'desc')->get();
-        $members = Member::all();
-        $loans = Loan::all();
+        $installments = Installment::with('loan')->orderBy('id', 'desc')->get();
+        $loans = Loan::with('member')->get();
+        $savings        = Saving::all();
 
-        return view('admin.installment', compact(['installments', 'members', 'loans']));
+        return view('admin.installment', compact(['installments', 'loans', 'savings']));
     }
 
     public function api_loan(Request $request)
