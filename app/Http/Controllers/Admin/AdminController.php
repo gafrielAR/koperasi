@@ -9,12 +9,16 @@ use App\Models\Saving;
 use App\Models\Member;
 use App\Models\Loan;
 use App\Models\Installment;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        if (Auth::user()->role == 'member') {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     public function dashboard()

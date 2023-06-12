@@ -39,14 +39,14 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function authenticated($user)
-    {
-        if ($user->role == 'member') {
-            return redirect()->route('dashboard.index');
-        } elseif ($user->role == 'admin') {
-            return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('dashboard.index');
-        }
-    }
+    // protected function authenticated($user)
+    // {
+    //     if ($user->role == 'member') {
+    //         return redirect()->route('dashboard.index');
+    //     } elseif ($user->role == 'admin') {
+    //         return redirect()->route('admin.dashboard');
+    //     } else {
+    //         return redirect()->route('dashboard.index');
+    //     }
+    // }
 }

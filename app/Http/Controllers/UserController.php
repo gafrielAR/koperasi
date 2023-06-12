@@ -12,6 +12,9 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
     }
 
     public function index()

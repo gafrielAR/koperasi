@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\InstallmentController;
 |
 */
 
-Route::get('/', function () {
+Route::middleware('guest')->get('/', function () {
     return view('auth.login');
 });
 
