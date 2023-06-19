@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>Dashboard <span id="tahunIniText">| Tahun ini</span></h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
@@ -15,95 +15,102 @@
     <div class="col-12 row">
         <div class="col">
             <div class="card info-card income-card p-0">
-
                 <div class="p-3">
+                    <h5 class="card-title">Uang Masuk</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-uang-masuk"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h5>Uang Masuk</h5>
-                            <h6>Rp. {{ number_format($savings->sum(function ($row) { return $row->principal_saving +
-                                $row->mandatory_saving + $row->voluntary_saving; })) }}</h6>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-uang-masuk"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6 id="totalSavings">Rp. 0</h6>
+                                <span class="small pt-1 fw-bold" id="savingsPercentage">0%</span>
+                                <span class="text-muted small pt-2 ps-1" id="savingsChangeText"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div class="col">
-            <div class="card info-card outcome-card p-0">
-
+            <div class="card info-card income-card p-0">
                 <div class="p-3">
+                    <h5 class="card-title">Uang Keluar</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-uang-keluar"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h5>Uang Keluar</h5>
-                            <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-uang-keluar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6 id="totalSpendings">Rp. 0</h6>
+                                <span class="small pt-1 fw-bold" id="spendingsPercentage">0%</span>
+                                <span class="text-muted small pt-2 ps-1" id="spendingsChangeText"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div class="col">
-            <div class="card info-card loan-card p-0">
-
+            <div class="card info-card income-card p-0">
                 <div class="p-3">
+                    <h5 class="card-title">Total Pinjaman</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-total-pinjaman"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h5>Total Pinjaman</h5>
-                            <h6>Rp. {{ number_format($loans->sum('loan')) }}</h6>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-total-pinjaman"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6 id="totalLoan">Rp. 0</h6>
+                                <span class="small pt-1 fw-bold" id="loanPercentage">0%</span>
+                                <span class="text-muted small pt-2 ps-1" id="loanChangeText"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div class="col">
-            <div class="card info-card saving-card p-0">
-
+            <div class="card info-card income-card p-0">
                 <div class="p-3">
+                    <h5 class="card-title">Total Simpanan</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-total-simpanan"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h5>Total Simpanan</h5>
-                            <h6>Rp. {{ number_format($savings->sum('principal_saving')) }}</h6>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-total-simpanan"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6 id="totalSaving">Rp. 0</h6>
+                                <span class="small pt-1 fw-bold" id="savingPercentage">0%</span>
+                                <span class="text-muted small pt-2 ps-1" id="savingChangeText"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div class="col">
-
-            <div class="card info-card installment-card p-0">
-
+            <div class="card info-card income-card p-0">
                 <div class="p-3">
+                    <h5 class="card-title">Total Angsuran</h5>
                     <div class="d-flex align-items-center">
-                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="ci-2 ci-dashboard-total-angsuran"></i>
-                        </div>
-                        <div class="ps-3">
-                            <h5>Total Angsuran</h5>
-                            <h6>Rp. {{ number_format($installments->sum('ammount')) }}</h6>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="ci-2 ci-dashboard-total-angsuran"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6 id="totalInstallments">Rp. 0</h6>
+                                <span class="small pt-1 fw-bold" id="installmentsPercentage">0%</span>
+                                <span class="text-muted small pt-2 ps-1" id="installmentsChangeText"></span>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -119,28 +126,20 @@
 
                             <ul class="nav nav-tabs" id="history" role="tablist">
                                 <li class="nav-item mr-4" role="presentation">
-                                    <button class="nav-link active" id="simpanan-tab" data-bs-toggle="tab"
-                                        data-bs-target="#simpanan" type="button" role="tab" aria-controls="simpanan"
-                                        aria-selected="true">Simpanan</button>
+                                    <button class="nav-link active" id="simpanan-tab" data-bs-toggle="tab" data-bs-target="#simpanan" type="button" role="tab" aria-controls="simpanan" aria-selected="true">Simpanan</button>
                                 </li>
                                 <li class="nav-item mr-4" role="presentation">
-                                    <button class="nav-link" id="pinjaman-tab" data-bs-toggle="tab"
-                                        data-bs-target="#pinjaman" type="button" role="tab" aria-controls="pinjaman"
-                                        aria-selected="false">Pinjaman</button>
+                                    <button class="nav-link" id="pinjaman-tab" data-bs-toggle="tab" data-bs-target="#pinjaman" type="button" role="tab" aria-controls="pinjaman" aria-selected="false">Pinjaman</button>
                                 </li>
                                 <li class="nav-item mr-4" role="presentation">
-                                    <button class="nav-link" id="angsuran-tab" data-bs-toggle="tab"
-                                        data-bs-target="#angsuran" type="button" role="tab" aria-controls="angsuran"
-                                        aria-selected="false">Angsuran</button>
+                                    <button class="nav-link" id="angsuran-tab" data-bs-toggle="tab" data-bs-target="#angsuran" type="button" role="tab" aria-controls="angsuran" aria-selected="false">Angsuran</button>
                                 </li>
                                 <li class="nav-item mr-4" role="presentation">
-                                    <button class="nav-link" id="shu-tab" data-bs-toggle="tab" data-bs-target="#shu"
-                                        type="button" role="tab" aria-controls="shu" aria-selected="false">Shu</button>
+                                    <button class="nav-link" id="shu-tab" data-bs-toggle="tab" data-bs-target="#shu" type="button" role="tab" aria-controls="shu" aria-selected="false">Shu</button>
                                 </li>
                             </ul>
                             <div class="tab-content pt-2" id="historyContent">
-                                <div class="tab-pane fade show active overflow-x-scroll" id="simpanan" role="tabpanel"
-                                    aria-labelledby="simpanan-tab">
+                                <div class="tab-pane fade show active overflow-x-scroll" id="simpanan" role="tabpanel" aria-labelledby="simpanan-tab">
                                     <div class="col-lg-12">
                                         <div class="table-responsive">
 
@@ -158,39 +157,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($savings as $saving)
-                                                    <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</td>
-                                                        <td>{{ $saving->prefix }}{{ str_pad($saving->id, 6, '0',
-                                                            STR_PAD_LEFT)
-                                                            }}</td>
-                                                        <td>{{ $saving->date }}</td>
-                                                        <td>
-                                                            {{ $saving->member->nip }} - {{ $saving->member->name }}
-                                                        </td>
-                                                        <td>{{ number_format($saving->principal_saving, 2) }}</td>
-                                                        <td>{{ number_format($saving->mandatory_saving, 2) }}</td>
-                                                        <td>{{ number_format($saving->voluntary_saving, 2) }}</td>
-                                                        <td>
-                                                            <span class="btn badge text-bg-primary">
-                                                                <a class="text-decoration-none text-light"
-                                                                    id="editButtonSavings" href="#"
-                                                                    data-id="{{ $saving->id }}">
-                                                                    <i class="bi bi-pencil-square"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </span>
-                                                            <span class="btn badge text-bg-danger">
-                                                                <a class="text-decoration-none text-light"
-                                                                    id="deleteButtonSavings" href="#"
-                                                                    data-id="{{ $saving->id }}">
-                                                                    <i class="bi bi-trash3"></i>
-                                                                    Hapus
-                                                                </a>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
                                                 </tbody>
                                             </table>
 
@@ -216,37 +182,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($loans as $loan)
-                                                    <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</td>
-                                                        <td>{{ $loan->prefix }}{{ str_pad($loan->id, 6, '0',
-                                                            STR_PAD_LEFT) }}</td>
-                                                        <td>{{ $loan->member->name }}</td>
-                                                        <td>{{ $loan->date }}</td>
-                                                        <td>Rp. {{ number_format($loan->loan, 2) }}-</td>
-                                                        <td>Rp. {{ number_format($loan->interest, 2) }}-</td>
-                                                        <td>{{ $loan->term }} Bulan</td>
-                                                        <td>Rp. {{ number_format($loan->installment, 2) }}-</td>
-                                                        <td>
-                                                            <span class="btn badge text-bg-primary">
-                                                                <a class="text-decoration-none text-light"
-                                                                    id="editButtonLoan" href="#"
-                                                                    data-id="{{ $loan->id }}">
-                                                                    <i class="bi bi-pencil-square"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </span>
-                                                            <span class="btn badge text-bg-danger">
-                                                                <a class="text-decoration-none text-light"
-                                                                    id="deleteButtonLoan" href="#"
-                                                                    data-id="{{ $loan->id }}">
-                                                                    <i class="bi bi-trash3"></i>
-                                                                    Hapus
-                                                                </a>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
                                                 </tbody>
                                             </table>
 
@@ -271,40 +206,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($installments as $installment)
-                                                    <tr>
-                                                        <th scope="row">{{ $loop->iteration }}</td>
-                                                        <td>{{ $installment->prefix }}{{ str_pad($installment->id, 6,
-                                                            '0', STR_PAD_LEFT) }}</td>
-                                                        <td>{{ $installment->date }}</td>
-                                                        <td>{{ $installment->loan->prefix }}{{
-                                                            str_pad($installment->loan->id, 6, '0', STR_PAD_LEFT) }}
-                                                        </td>
-                                                        <td>{{ $installment->loan->member->nip }} - {{
-                                                            $installment->loan->member->name }}</td>
-                                                        <td>{{ $installment->installment_number }}</td>
-                                                        <td>Rp. {{ number_format($installment->ammount, 2) }}-</td>
-                                                        <td>
-                                                            <span class="btn badge text-bg-primary">
-                                                                <a class="text-decoration-none text-light"
-                                                                    id="editButtonInstallments" href="#"
-                                                                    data-id="{{ $installment->id }}">
-                                                                    <i class="bi bi-pencil-square"></i>
-                                                                    Edit
-                                                                </a>
-                                                            </span>
-                                                            <span class="btn badge text-bg-danger">
-                                                                <a class="text-decoration-none text-light"
-                                                                    id="deleteButtonInstallments" href="#"
-                                                                    data-id="{{ $installment->id }}">
-                                                                    <i class="bi bi-trash3"></i>
-                                                                    Hapus
-                                                                </a>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-
-                                                    @endforeach
                                                 </tbody>
                                             </table>
 
@@ -329,12 +230,12 @@
                                                 <tbody>
                                                     @foreach ($shuData as $shu)
                                                     <tr>
-                                                        <th>{{ $loop->iteration }}</th>
-                                                        <th>{{ $shu['member'] }}</th>
-                                                        <th>{{ $shu['year'] }}</th>
-                                                        <th>Rp. {{ number_format($shu['total_savings']) }}</th>
-                                                        <th>Rp. {{ number_format($shu['total_interest']) }}</th>
-                                                        <th>Rp. {{ number_format($shu['shu']) }}</th>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $shu['member'] }}</td>
+                                                        <td>{{ $shu['year'] }}</td>
+                                                        <td>Rp. {{ number_format($shu['total_savings']) }}</td>
+                                                        <td>Rp. {{ number_format($shu['total_interest']) }}</td>
+                                                        <td>Rp. {{ number_format($shu['shu']) }}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -367,16 +268,14 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
-                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
-                            class="text-danger fw-bold">*</span>:</label>
+                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <input type="date" class="form-control" id="date" name="date" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
-                            class="text-danger fw-bold">*</span>:</label>
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <select name="member_id" id="member_id" class="form-control" required>
                             <option value="" selected disabled>Pilih Anggota</option>
@@ -390,24 +289,21 @@
                 <div class="mb-3 row">
                     <label for="principal_saving" class="col-sm-2 col-form-label text-end">S. Pokok :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="principal_saving" name="principal_saving"
-                            required>
+                        <input type="number" min="1" class="form-control" id="principal_saving" name="principal_saving" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="mandatory_saving" class="col-sm-2 col-form-label text-end">S. Wajib :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="mandatory_saving" name="mandatory_saving"
-                            required>
+                        <input type="number" min="1" class="form-control" id="mandatory_saving" name="mandatory_saving" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="voluntary_saving" class="col-sm-2 col-form-label text-end">S. Sukarela :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="voluntary_saving" name="voluntary_saving"
-                            required>
+                        <input type="number" min="1" class="form-control" id="voluntary_saving" name="voluntary_saving" required>
                     </div>
                 </div>
 
@@ -429,16 +325,14 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
-                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
-                            class="text-danger fw-bold">*</span>:</label>
+                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <input type="date" class="form-control" id="date" name="date" required disabled>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span
-                            class="text-danger fw-bold">*</span>:</label>
+                    <label for="member_id" class="col-sm-2 col-form-label text-end">Anggota <span class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <select name="member_id" id="member_id" class="form-control" required disabled>
                             <option value="" selected disabled>Pilih Anggota</option>
@@ -452,8 +346,7 @@
                 <div class="mb-3 row">
                     <label for="term" class="col-sm-2 col-form-label text-end">Masa :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="term" name="term" placeholder="Bulan"
-                            required>
+                        <input type="number" min="1" class="form-control" id="term" name="term" placeholder="Bulan" required>
                     </div>
                 </div>
 
@@ -496,16 +389,14 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3 row">
-                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span
-                            class="text-danger fw-bold">*</span>:</label>
+                    <label for="date" class="col-sm-2 col-form-label text-end">Tanggal <span class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <input type="date" class="form-control" id="date" name="date" required disabled>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="loan_id" class="col-sm-2 col-form-label text-end">No.Pinjaman <span
-                            class="text-danger fw-bold">*</span>:</label>
+                    <label for="loan_id" class="col-sm-2 col-form-label text-end">No.Pinjaman <span class="text-danger fw-bold">*</span>:</label>
                     <div class="col-sm-10">
                         <select name="loan_id" id="loan_id" class="form-control" required disabled>
                             <option value="" selected disabled>Loan Number</option>
@@ -523,8 +414,7 @@
                 <div class="mb-3 row">
                     <label for="installment_number" class="col-sm-2 col-form-label text-end">Ke :</label>
                     <div class="col-sm-10">
-                        <input type="number" min="1" class="form-control" id="installment_number"
-                            name="installment_number" required>
+                        <input type="number" min="1" class="form-control" id="installment_number" name="installment_number" required>
                     </div>
                 </div>
 
@@ -547,11 +437,282 @@
 @section('script')
 <script>
     $(document).ready(function() {
+        // Function to update the card content based on the selected year
+        function updateCard(year) {
+            $.ajax({
+                url: "{{ route('admin.filter') }}"
+                , method: 'GET'
+                , data: {
+                    year: year
+                }
+                , success: function(response) {
+                    // Calculate the total savings for the selected year
+                    var totalSavings = response.savings.reduce(function(sum, item) {
+                        return sum + item.principal_saving + item.mandatory_saving + item.voluntary_saving;
+                    }, 0);
+
+                    // Calculate the total spendings from loans for the selected year
+                    var totalSpendings = response.loans.reduce(function(sum, item) {
+                        return sum + item.loan;
+                    }, 0);
+
+                    // Calculate the total spendings from loans for the selected year
+                    var totalInstallments = response.installments.reduce(function(sum, item) {
+                        return sum + item.ammount;
+                    }, 0);
+
+                    // Calculate the total spendings for the previous year
+                    var previousYear = year - 1;
+                    $.ajax({
+                        url: "{{ route('admin.filter') }}"
+                        , method: 'GET'
+                        , data: {
+                            year: previousYear
+                        }
+                        , success: function(previousResponse) {
+                            var previousYearSavings = previousResponse.savings.reduce(function(sum, item) {
+                                return sum + item.principal_saving + item.mandatory_saving + item.voluntary_saving;
+                            }, 0);
+
+                            var previousYearSpendings = previousResponse.loans.reduce(function(sum, item) {
+                                return sum + item.loan;
+                            }, 0);
+
+                            var previousYearInstallments = previousResponse.installments.reduce(function(sum, item) {
+                                return sum + item.ammount;
+                            }, 0);
+
+                            // Calculate the savings percentage change from the previous year
+                            var savingsPercentage = 0;
+                            if (previousYearSavings !== 0) {
+                                savingsPercentage = ((totalSavings - previousYearSavings) / previousYearSavings) * 100;
+                            }
+
+                            // Calculate the spendings percentage change from the previous year
+                            var spendingsPercentage = 0;
+                            if (previousYearSpendings !== 0) {
+                                spendingsPercentage = ((totalSpendings - previousYearSpendings) / previousYearSpendings) * 100;
+                            }
+
+                            // Calculate the spendings percentage change from the previous year
+                            var installmentsPercentage = 0;
+                            if (previousYearInstallments !== 0) {
+                                installmentsPercentage = ((totalInstallments - previousYearInstallments) / previousYearInstallments) * 100;
+                            }
+
+                            // Update the card content with the new values
+                            $('#savingsPercentage').removeClass('text-danger text-success');
+                            $('#totalSavings').text('Rp. ' + totalSavings.toLocaleString());
+                            $('#savingsPercentage').text(savingsPercentage.toFixed(2) + '%');
+                            $('#savingsPercentage').addClass(savingsPercentage >= 0 ? 'text-success' : 'text-danger');
+                            $('#savingsChangeText').text(savingsPercentage >= 0 ? 'increase' : 'decrease');
+
+                            $('#savingPercentage').removeClass('text-danger text-success');
+                            $('#totalSaving').text('Rp. ' + totalSavings.toLocaleString());
+                            $('#savingPercentage').text(savingsPercentage.toFixed(2) + '%');
+                            $('#savingPercentage').addClass(savingsPercentage >= 0 ? 'text-success' : 'text-danger');
+                            $('#savingChangeText').text(savingsPercentage >= 0 ? 'increase' : 'decrease');
+
+                            // Update the spendings card content
+                            $('#totalSpendings').text('Rp. ' + totalSpendings.toLocaleString());
+                            $('#spendingsPercentage').removeClass('text-danger text-success');
+                            $('#spendingsPercentage').text(spendingsPercentage.toFixed(2) + '%');
+                            $('#spendingsPercentage').addClass(spendingsPercentage >= 0 ? 'text-success' : 'text-danger');
+                            $('#spendingsChangeText').text(spendingsPercentage >= 0 ? 'increase' : 'decrease');
+
+                            // Update the spendings card content
+                            $('#totalLoan').text('Rp. ' + totalSpendings.toLocaleString());
+                            $('#loanPercentage').removeClass('text-danger text-success');
+                            $('#loanPercentage').text(spendingsPercentage.toFixed(2) + '%');
+                            $('#loanPercentage').addClass(spendingsPercentage >= 0 ? 'text-success' : 'text-danger');
+                            $('#loanChangeText').text(spendingsPercentage >= 0 ? 'increase' : 'decrease');
+
+                            // Update the spendings card content
+                            $('#totalInstallments').text('Rp. ' + totalInstallments.toLocaleString());
+                            $('#installmentsPercentage').removeClass('text-danger text-success');
+                            $('#installmentsPercentage').text(installmentsPercentage.toFixed(2) + '%');
+                            $('#installmentsPercentage').addClass(installmentsPercentage >= 0 ? 'text-success' : 'text-danger');
+                            $('#installmentsChangeText').text(installmentsPercentage >= 0 ? 'increase' : 'decrease');
+                        }
+                        , error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+                , error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+
+
+        function savingHistory(year) {
+            year = year || new Date().getFullYear();
+
+            $.ajax({
+                url: "{{ route('admin.getData') }}"
+                , method: 'GET'
+                , data: {
+                    year: year
+                }
+                , success: function(response) {
+                    var dataTable = $('#savingHistoryTable').DataTable();
+                    dataTable.clear();
+                    $.each(response.savings, function(index, saving) {
+                        var row = [
+                            (index + 1)
+                            , saving.prefix + ("000000" + saving.id).slice(-6)
+                            , saving.date
+                            , saving.member.nip + ' - ' + saving.member.name
+                            , parseFloat(saving.principal_saving).toFixed(2)
+                            , parseFloat(saving.mandatory_saving).toFixed(2)
+                            , parseFloat(saving.voluntary_saving).toFixed(2)
+                            , '<span class="btn badge text-bg-primary">' +
+                            '<a class="text-decoration-none text-light" id="editButtonSavings" href="#" data-id="' + saving.id + '">' +
+                            '<i class="bi bi-pencil-square"></i> Edit' +
+                            '</a>' +
+                            '</span>' +
+                            '<span class="btn badge text-bg-danger">' +
+                            '<a class="text-decoration-none text-light" id="deleteButtonSavings" href="#" data-id="' + saving.id + '">' +
+                            '<i class="bi bi-trash3"></i> Hapus' +
+                            '</a>' +
+                            '</span>'
+                        ];
+                        dataTable.row.add(row);
+                    });
+                    dataTable.draw();
+                }
+                , error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function loanHistory(year) {
+            year = year || new Date().getFullYear();
+
+            $.ajax({
+                url: "{{ route('admin.getData') }}"
+                , method: 'GET'
+                , data: {
+                    year: year
+                }
+                , success: function(response) {
+                    var dataTable = $('#loanHistoryTable').DataTable();
+                    dataTable.clear();
+
+                    $.each(response.loans, function(index, loan) {
+                        var row = [
+                            (index + 1)
+                            , loan.prefix + ("000000" + loan.id).slice(-6)
+                            , loan.member.name
+                            , loan.date
+                            , 'Rp. ' + parseFloat(loan.loan).toFixed(2)
+                            , 'Rp. ' + parseFloat(loan.interest).toFixed(2)
+                            , loan.term + ' Bulan'
+                            , 'Rp. ' + parseFloat(loan.installment).toFixed(2)
+                            , '<span class="btn badge text-bg-primary">' +
+                            '<a class="text-decoration-none text-light" id="editButtonLoan" href="#" data-id="' + loan.id + '">' +
+                            '<i class="bi bi-pencil-square"></i> Edit' +
+                            '</a>' +
+                            '</span>' +
+                            '<span class="btn badge text-bg-danger">' +
+                            '<a class="text-decoration-none text-light" id="deleteButtonLoan" href="#" data-id="' + loan.id + '">' +
+                            '<i class="bi bi-trash3"></i> Hapus' +
+                            '</a>' +
+                            '</span>'
+                        ];
+
+                        dataTable.row.add(row);
+                    });
+
+                    dataTable.draw();
+                }
+                , error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function installmentHistory(year) {
+            year = year || new Date().getFullYear();
+
+            $.ajax({
+                url: "{{ route('admin.getData') }}"
+                , method: 'GET'
+                , data: {
+                    year: year
+                }
+                , success: function(response) {
+                    var dataTable = $('#installmentHistoryTable').DataTable();
+                    dataTable.clear();
+
+                    $.each(response.installments, function(index, installment) {
+                        var row = [
+                            (index + 1)
+                            , installment.prefix + ("000000" + installment.id).slice(-6)
+                            , installment.date
+                            , installment.loan.prefix + ("000000" + installment.loan.id).slice(-6)
+                            , installment.loan.member.nip + ' - ' + installment.loan.member.name
+                            , installment.installment_number
+                            , 'Rp. ' + parseFloat(installment.ammount).toFixed(2)
+                            , '<span class="btn badge text-bg-primary">' +
+                            '<a class="text-decoration-none text-light" id="editButtonInstallment" href="#" data-id="' + installment.id + '">' +
+                            '<i class="bi bi-pencil-square"></i> Edit' +
+                            '</a>' +
+                            '</span>' +
+                            '<span class="btn badge text-bg-danger">' +
+                            '<a class="text-decoration-none text-light" id="deleteButtonInstallment" href="#" data-id="' + installment.id + '">' +
+                            '<i class="bi bi-trash3"></i> Hapus' +
+                            '</a>' +
+                            '</span>'
+                        ];
+
+                        dataTable.row.add(row);
+                    });
+
+                    dataTable.draw();
+                }
+                , error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        // Event listener for filter selection
+        $('.filter-option').click(function(e) {
+            e.preventDefault();
+            var selectedYear = $(this).data('year');
+            $('#tahunIniText').text('| ' + selectedYear);
+            updateCard(selectedYear);
+            savingHistory(selectedYear);
+            loanHistory(selectedYear);
+            installmentHistory(selectedYear);
+        });
+
+        // Initial card update for the current year
+        var currentYear = new Date().getFullYear();
+        $('#tahunIniText').text('| ' + currentYear);
+        updateCard(currentYear);
+        savingHistory(currentYear);
+        loanHistory(currentYear);
+        installmentHistory(currentYear);
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
         $('#member_id').select2({
-            dropdownParent: ".modal",
-            theme: 'bootstrap-5'
+            dropdownParent: ".modal"
+            , theme: 'bootstrap-5'
+        });
+        $('#loan_id').select2({
+            dropdownParent: ".modal"
+            , theme: 'bootstrap-5'
         });
     });
+
 </script>
 <script>
     $.ajaxSetup({
@@ -564,21 +725,21 @@
     $('body').on('click', '#editButtonSavings', function(e) {
         var id = $(this).data('id');
         $.ajax({
-            url: 'admin/saving/' + id + '/edit',
-            type: 'GET',
-            success: function(response) {
+            url: 'admin/saving/' + id + '/edit'
+            , type: 'GET'
+            , success: function(response) {
                 console.log(response.result);
                 $('#savingModal').modal('show');
-                $('#date').val(response.result.date),
-                $('#date').attr('disabled', true),
-                $('#member_id').val(response.result.member_id),
-                $('#member_id').attr('disabled', true),
-                $('#principal_saving').val(response.result.principal_saving),
-                $('#mandatory_saving').val(response.result.mandatory_saving),
-                $('#voluntary_saving').val(response.result.voluntary_saving),
-                $('#saveSavings').click(function() {
-                    save(id);
-                });
+                $('#date').val(response.result.date)
+                    , $('#date').attr('disabled', true)
+                    , $('#member_id').val(response.result.member_id)
+                    , $('#member_id').attr('disabled', true)
+                    , $('#principal_saving').val(response.result.principal_saving)
+                    , $('#mandatory_saving').val(response.result.mandatory_saving)
+                    , $('#voluntary_saving').val(response.result.voluntary_saving)
+                    , $('#saveSavings').click(function() {
+                        save(id);
+                    });
             }
         });
     });
@@ -588,12 +749,12 @@
         if (confirm('are you sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
-                url: 'admin/saving/delete/' + id,
-                type: 'POST',
-                success: function(html) {
+                url: 'admin/saving/delete/' + id
+                , type: 'POST'
+                , success: function(html) {
                     location.reload();
-                },
-            });
+                }
+            , });
         }
     });
 
@@ -608,20 +769,20 @@
         }
         console.log(action);
         $.ajax({
-            url: action,
-            type: method,
-            data: {
-                date: $('#date').val(),
-                member_id: $('#member_id').val(),
-                principal_saving: $('#principal_saving').val(),
-                mandatory_saving: $('#mandatory_saving').val(),
-                voluntary_saving: $('#voluntary_saving').val(),
-            },
-            success: function(html) {
+            url: action
+            , type: method
+            , data: {
+                date: $('#date').val()
+                , member_id: $('#member_id').val()
+                , principal_saving: $('#principal_saving').val()
+                , mandatory_saving: $('#mandatory_saving').val()
+                , voluntary_saving: $('#voluntary_saving').val()
+            , }
+            , success: function(html) {
                 location.reload();
-            },
-        });
-    }   
+            }
+        , });
+    }
     $('#savingModal').on('hidden.bs.modal', function() {
         $('#date').val();
         $('#member_id').val();
@@ -629,6 +790,7 @@
         $('#mandatory_saving').val();
         $('#voluntary_saving').val();
     });
+
 </script>
 <script>
     $.ajaxSetup({
@@ -641,24 +803,24 @@
     $('body').on('click', '#editButtonLoan', function(e) {
         var id = $(this).data('id');
         $.ajax({
-            url: 'admin/loan/' + id + '/edit',
-            type: 'GET',
-            success: function(response) {
+            url: 'admin/loan/' + id + '/edit'
+            , type: 'GET'
+            , success: function(response) {
                 console.log(response.result);
                 $('#loanModal').modal('show');
-                $('#date').val(response.result.date),
-                $('#date').attr('disabled', true),
-                $('#member_id').val(response.result.member_id),
-                $('#member_id').attr('disabled', true),
-                $('#term').val(response.result.term),
-                $('#loan').val(response.result.loan),
-                $('#interest').val(response.result.interest),
-                $('#installment').val(response.result.installment),
-                $('#saveLoan').click(function() {
-                    save(id);
-                });
-            },
-            error: function(xhr) {
+                $('#date').val(response.result.date)
+                    , $('#date').attr('disabled', true)
+                    , $('#member_id').val(response.result.member_id)
+                    , $('#member_id').attr('disabled', true)
+                    , $('#term').val(response.result.term)
+                    , $('#loan').val(response.result.loan)
+                    , $('#interest').val(response.result.interest)
+                    , $('#installment').val(response.result.installment)
+                    , $('#saveLoan').click(function() {
+                        save(id);
+                    });
+            }
+            , error: function(xhr) {
                 // Handle error response
                 var errors = xhr.responseJSON.errors;
                 $.each(errors, function(field, messages) {
@@ -677,12 +839,12 @@
         if (confirm('are you sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
-                url: 'admin/loan/delete/' + id,
-                type: 'POST',
-                success: function(html) {
+                url: 'admin/loan/delete/' + id
+                , type: 'POST'
+                , success: function(html) {
                     location.reload();
-                },
-            });
+                }
+            , });
         }
     });
 
@@ -697,20 +859,20 @@
         }
         console.log(action);
         $.ajax({
-            url: action,
-            type: method,
-            data: {
-                date: $('#date').val(),
-                member_id: $('#member_id').val(),
-                term: $('#term').val(),
-                loan: $('#loan').val(),
-                interest: $('#interest').val(),
-                installment: $('#installment').val(),
-            },
-            success: function(html) {
+            url: action
+            , type: method
+            , data: {
+                date: $('#date').val()
+                , member_id: $('#member_id').val()
+                , term: $('#term').val()
+                , loan: $('#loan').val()
+                , interest: $('#interest').val()
+                , installment: $('#installment').val()
+            , }
+            , success: function(html) {
                 location.reload();
-            },
-        });
+            }
+        , });
     }
     $('#loanModal').on('hidden.bs.modal', function() {
         $('#date').val();
@@ -720,6 +882,7 @@
         $('#interest').val();
         $('#installment').val();
     });
+
 </script>
 <script>
     $.ajaxSetup({
@@ -732,20 +895,20 @@
     $('body').on('click', '#editButtonInstallments', function(e) {
         var id = $(this).data('id');
         $.ajax({
-            url: 'admin/installment/' + id + '/edit',
-            type: 'GET',
-            success: function(response) {
+            url: 'admin/installment/' + id + '/edit'
+            , type: 'GET'
+            , success: function(response) {
                 console.log(response.result);
                 $('#installmentModal').modal('show');
-                $('#date').val(response.result.date),
-                $('#date').attr('disabled', true),
-                $('#loan_id').val(response.result.loan_id),
-                $('#loan_id').attr('disabled', true),
-                $('#installment_number').val(response.result.installment_number),
-                $('#ammount').val(response.result.ammount),
-                $('#saveInstallment').click(function() {
-                    save(id);
-                });
+                $('#date').val(response.result.date)
+                    , $('#date').attr('disabled', true)
+                    , $('#loan_id').val(response.result.loan_id)
+                    , $('#loan_id').attr('disabled', true)
+                    , $('#installment_number').val(response.result.installment_number)
+                    , $('#ammount').val(response.result.ammount)
+                    , $('#saveInstallment').click(function() {
+                        save(id);
+                    });
             }
         });
     });
@@ -755,12 +918,12 @@
         if (confirm('are you sure?') == true) {
             var id = $(this).data('id');
             $.ajax({
-                url: 'admin/installment/delete/' + id,
-                type: 'POST',
-                success: function(html) {
+                url: 'admin/installment/delete/' + id
+                , type: 'POST'
+                , success: function(html) {
                     location.reload();
-                },
-            });
+                }
+            , });
         }
     });
 
@@ -775,20 +938,20 @@
         }
         console.log(action);
         $.ajax({
-            url: action,
-            type: method,
-            data: {
-                date: $('#date').val(),
-                member_id: $('#member_id').val(),
-                loan_id: $('#loan_id').val(),
-                installment_number: $('#installment_number').val(),
-                ammount: $('#ammount').val(),
-            },
-            success: function(html) {
+            url: action
+            , type: method
+            , data: {
+                date: $('#date').val()
+                , member_id: $('#member_id').val()
+                , loan_id: $('#loan_id').val()
+                , installment_number: $('#installment_number').val()
+                , ammount: $('#ammount').val()
+            , }
+            , success: function(html) {
                 location.reload();
-            },
-        });
-    }   
+            }
+        , });
+    }
     $('#installmentModal').on('hidden.bs.modal', function() {
         $('#date').val();
         $('#member_id').val();
@@ -796,19 +959,15 @@
         $('#installment_number').val();
         $('#ammount').val();
     });
+
 </script>
 <script>
     $(document).ready(function() {
-        $('#loan_id').select2({
-            dropdownParent: ".modal",
-            theme: 'bootstrap-5'
+        $('.datatable').dataTable({
+            paging: true
+            , autoWidth: true
         });
     });
-</script>
-<script>
-    $('.datatable').dataTable( {
-        paging: true,
-        autoWidth: true
-    });
+
 </script>
 @endsection

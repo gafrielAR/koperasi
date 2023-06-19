@@ -9,23 +9,17 @@ use App\Models\Saving;
 use App\Models\Member;
 use App\Models\Loan;
 use App\Models\Installment;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        
-    }
-
     public function dashboard()
     {
         // $members        = Member::all();
-        $savings        = Saving::with('member')->get();
-        $loans          = Loan::with(['member', 'installments'])->get();
-        $installments   = Installment::with('loan')->get();
-        $members        = Member::with(['loans', 'savings'])->get();
+        $savings = Saving::with('member')->get();
+        $loans = Loan::with(['member', 'installments'])->get();
+        $installments = Installment::with('loan')->get();
+        $members = Member::with(['loans', 'savings'])->get();
 
         $savingsByYearAndMember = Saving::select(
             DB::raw('YEAR(date) AS year'),
@@ -35,7 +29,10 @@ class AdminController extends Controller
             ->groupBy('year', 'member_id')
             ->get();
 
-        $interestByYear = Loan::select(DB::raw('YEAR(date) AS year'), DB::raw('SUM(interest) AS total_interest'))
+        $interestByYear = Loan::select(
+            DB::raw('YEAR(date) AS year'),
+            DB::raw('SUM(interest) AS total_interest')
+        )
             ->groupBy('year')
             ->get();
 
@@ -45,7 +42,7 @@ class AdminController extends Controller
             $year = $savingsShu->year;
             $member = Member::findOrFail($savingsShu->member_id);
             $totalSavings = $savingsShu->total_savings;
-            $totalInterest = $interestByYear->firstWhere('year', $year)->total_interest;
+            $totalInterest = $interestByYear->firstWhere('year', $year)->total_interest ?? 0;
             $multiply = $totalSavings + $totalInterest;
             $shu = $multiply * 0.05;
 
@@ -58,67 +55,64 @@ class AdminController extends Controller
             ];
         }
 
-        return view('admin.dashboard', compact(['members', 'savings', 'loans', 'installments', 'shuData']));
+        return view('admin.dashboard', compact('members', 'savings', 'loans', 'installments', 'shuData'));
     }
 
-    public function savingChart()
+    public function getData(Request $request)
     {
-        $year = 2022;
+        $year = $request->input('year', date('Y'));
 
-        $results = DB::select("
-            SELECT
-                months.month,
-                COALESCE(SUM(s.mandatory_saving), 0) AS mandatory_saving,
-                COALESCE(SUM(s.principal_saving), 0) AS principal_saving
-            FROM (
-                SELECT 1 AS month
-                UNION SELECT 2
-                UNION SELECT 3
-                UNION SELECT 4
-                UNION SELECT 5
-                UNION SELECT 6
-                UNION SELECT 7
-                UNION SELECT 8
-                UNION SELECT 9
-                UNION SELECT 10
-                UNION SELECT 11
-                UNION SELECT 12
-            ) AS months
-            LEFT JOIN savings AS s
-                ON MONTH(s.date) = months.month
-                    AND YEAR(s.date) = :year
-            GROUP BY
-                months.month
-            ORDER BY
-                months.month
-        ", ['year' => $year]);
+        $savingQuery = Saving::query();
+        $loanQuery = Loan::query();
+        $installmentQuery = Installment::query();
 
-        $labels = [];
-        $mandatorySavingData = [];
-        $principalSavingData = [];
+        // If a specific year is selected, apply the filtering
+        if ($year) {
+            $startDate = "{$year}-01-01 00:00:00";
+            $endDate = "{$year}-12-31 23:59:59";
 
-        foreach ($results as $result) {
-            $labels[] = "Month " . $result->month;
-            $mandatorySavingData[] = $result->mandatory_saving;
-            $principalSavingData[] = $result->principal_saving;
+            $savingQuery->whereBetween('date', [$startDate, $endDate]);
+            $loanQuery->whereBetween('date', [$startDate, $endDate]);
+            $installmentQuery->whereBetween('date', [$startDate, $endDate]);
         }
 
-        $data = [
-            'labels' => $labels,
-            'series' => [
-                [
-                    'name' => 'Mandatory Saving',
-                    'data' => $mandatorySavingData,
-                ],
-                [
-                    'name' => 'Principal Saving',
-                    'data' => $principalSavingData,
-                ],
-            ],
+        $savings = $savingQuery->with('member')->get();
+        $loans = $loanQuery->with(['member', 'installments'])->get();
+        $installments = $installmentQuery->with(['loan', 'loan.member'])->get();
+
+        return response()->json([
+            'savings' => $savings,
+            'loans' => $loans,
+            'installments' => $installments
+        ]);
+    }
+
+
+    public function filterByYear(Request $request)
+    {
+        $year = $request->input('year', date('Y'));
+
+        $items = [
+            'savings' => Saving::whereYear('date', $year)->get(),
+            'loans' => Loan::whereYear('date', $year)->get(),
+            'installments' => Installment::whereYear('date', $year)->get(),
         ];
 
-        // $jsonData = json_encode($data);
+        return response()->json($items);
+    }
 
-        return response()->json(['result' => $data]);
+    public function savingChart(Request $request)
+    {
+        $year = $request->input('year', date('Y'));
+        $data = Saving::whereYear('date', $year)->get();
+
+        $response = [
+            'chart' => [
+                'prices' => $data->pluck('principal_saving')->toArray(),
+                'dates' => $data->pluck('date')->toArray()
+            ]
+        ];
+
+        return response()->json($response);
     }
 }

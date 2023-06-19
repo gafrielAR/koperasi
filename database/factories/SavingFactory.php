@@ -18,10 +18,10 @@ class SavingFactory extends Factory
     public function definition()
     {
         $prefix = 'SV';
-        
+
         return [
             'prefix' => $prefix,
-            'date' => '2022-' . fake()->date($format = 'm-d', $max = 'now'),
+            'date' => fake()->dateTimeBetween('2021-01-01', '2023-12-31')->format('Y-m-d'),
             'member_id' => fake()->randomDigitNotZero(),
             'principal_saving' => fake()->numberBetween($min = 100000, $max = 1000000),
             'mandatory_saving' => fake()->numberBetween($min = 100000, $max = 1000000),

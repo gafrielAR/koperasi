@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\InstallmentController;
 |
 */
 
-Route::get('/', function () {
+Route::middleware('guest')->get('/', function () {
     return view('auth.login');
 });
 
@@ -33,6 +33,8 @@ Route::name('dashboard.')->prefix('dashboard')->middleware('role:member')->group
 Route::name('admin.')->prefix('admin')->middleware('role:admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/saving-chart', [AdminController::class, 'savingChart'])->name('saving.chart');
+    Route::get('/filter', [AdminController::class, 'filterByYear'])->name('filter');
+    Route::get('/getData', [AdminController::class, 'getData'])->name('getData');
 
     Route::name('member.')->prefix('member')->group(function () {
         Route::get('/', [MemberController::class, 'list'])->name('list');

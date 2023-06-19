@@ -20,7 +20,7 @@ class InstallmentFactory extends Factory
         static $increment = 1;
         return [
             'prefix' => $prefix,
-            'date' => '2022-'.fake()->date($format = 'm-d', $max = 'now'),
+            'date' => fake()->dateTimeBetween('2021-01-01', '2023-12-31')->format('Y-m-d'),
             'loan_id' => fake()->randomDigitNotZero(),
             'installment_number' => fake()->numberBetween($min = 1, $max = 40),
             'ammount' => fake()->numberBetween($min = 100000, $max = 10000000),

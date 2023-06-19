@@ -17,10 +17,10 @@ class LoanFactory extends Factory
     public function definition()
     {
         $prefix = 'LN';
-        
+
         return [
             'prefix' => $prefix,
-            'date' => '2022-' . fake()->date($format = 'm-d', $max = 'now'),
+            'date' => fake()->dateTimeBetween('2021-01-01', '2023-12-31')->format('Y-m-d'),
             'member_id' => fake()->randomDigitNotZero(),
             'loan' => fake()->numberBetween($min = 100000, $max = 10000000),
             'interest' => fake()->numberBetween($min = 10000, $max = 50000),

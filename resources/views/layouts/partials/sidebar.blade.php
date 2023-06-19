@@ -3,12 +3,33 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link {{ (request()->is('admin')) ? '' : 'collapsed' }}"
+            <a class="nav-link nav-link {{ (request()->is('admin')) ? '' : 'collapsed' }}"
                 href="{{ Auth::user()->role == 'admin' ? route('admin.dashboard') : route('dashboard.index') }}">
                 <i class="ci-1 ci-dashboard-line"></i>
                 <span>Dashboard</span>
             </a>
+            <ul id="components-nav" class="nav-content" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a class="filter-option" href="#" data-year="{{ date('Y') }}">
+                        <i class="bi bi-circle"></i>
+                        <span>{{ date('Y') }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="filter-option" href="#" data-year="{{ date('Y', strtotime('-1 year')) }}">
+                        <i class="bi bi-circle"></i>
+                        <span>{{ date('Y', strtotime('-1 year')) }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="filter-option" href="#" data-year="{{ date('Y', strtotime('-2 year')) }}">
+                        <i class="bi bi-circle"></i>
+                        <span>{{ date('Y', strtotime('-2 year')) }}</span>
+                    </a>
+                </li>
+            </ul>
         </li>
+
 
         @if (Auth::user()->role == 'admin')
         <li class="nav-heading">Pages</li>
