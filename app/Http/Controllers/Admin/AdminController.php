@@ -16,9 +16,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        if (Auth::user()->role == 'member') {
-            return redirect()->route('dashboard.index');
-        }
+        
     }
 
     public function dashboard()
